@@ -362,6 +362,7 @@ function switchTab(id, el) {
   if (id === 'archive') renderArchive();
   if (id === 'overview') loadOverviewMarket();
   if (id === 'ai') loadAI();
+  if (id === 'intl') translateCards();
 }
 function switchTabByName(id) {
   const tabs = document.querySelectorAll('.nav-tab');
@@ -699,12 +700,7 @@ async function translateCard(card) {
   } catch(e) { /* 翻译失败静默跳过 */ }
 }
 
-// 切换到国际新闻时触发翻译
-const _origSwitch = switchTab;
-function switchTab(id, el) {
-  _origSwitch(id, el);
-  if (id === 'intl') translateCards();
-}
+// 切换到国际新闻时触发翻译（直接在 switchTab 内处理，避免循环引用）
 </script>
 </body>
 </html>
