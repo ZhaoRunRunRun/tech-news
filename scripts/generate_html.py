@@ -17,7 +17,7 @@ def load_json(filename, default):
 def esc(s):
     return str(s).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace('"','&quot;')
 
-def render_cards(items, limit=None):
+def render_cards(items, limit=None, translate=False):
     if not items:
         return '<div class="empty">暂无数据</div>'
     if limit:
@@ -38,10 +38,13 @@ def render_cards(items, limit=None):
         tag_cls = src_colors.get(src, "tag-default")
         s_html = f'<span class="score">&#9650; {score}</span>' if score else ""
         d_html = f'<p class="desc">{desc}</p>' if desc else ""
+        tr_attr = ' data-translate="1"' if translate else ""
         out += (
-            f'<a class="card" href="{url}" target="_blank" rel="noopener">'
+            f'<a class="card" href="{url}" target="_blank" rel="noopener"{tr_attr}>'
             f'<div class="card-top"><span class="tag {tag_cls}">{esc(src)}</span>{s_html}</div>'
-            f'<div class="card-title">{title}</div>{d_html}'
+            f'<div class="card-title">{title}</div>'
+            f'<div class="card-zh" style="display:none"></div>'
+            f'{d_html}'
             f'<div class="card-time">{time_}</div></a>'
         )
     return out
@@ -66,10 +69,11 @@ def main():
         f.write(_head(date))
         f.write(_nav())
         f.write(_overview(intl, dom, trend, date, total))
-        f.write(_panel_intl(render_cards(intl)))
+        f.write(_panel_intl(render_cards(intl, translate=True)))
         f.write(_panel_dom(render_cards(dom)))
         f.write(_panel_trend(render_cards(trend)))
         f.write(_panel_market())
+        f.write(_panel_ai())
         f.write(_panel_archive())
         f.write(_modal())
         f.write(_footer(gen))
@@ -144,6 +148,8 @@ a{{color:inherit;text-decoration:none}}
 .card-title{{font-size:.88rem;font-weight:600;line-height:1.55;color:var(--tx)}}
 .desc{{font-size:.78rem;color:var(--mu);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
 .card-time{{font-size:.7rem;color:var(--mu);margin-top:auto;padding-top:.2rem}}
+.card-zh{{font-size:.8rem;color:var(--ac);line-height:1.45;margin-top:.15rem;font-weight:500}}
+.card-en{{font-size:.75rem;color:var(--mu);line-height:1.4;margin-top:.1rem}}
 .empty{{color:var(--mu);padding:2rem;text-align:center;font-size:.85rem}}
 
 /* ── 侧边栏 ── */
@@ -205,6 +211,23 @@ a{{color:inherit;text-decoration:none}}
 .modal-close:hover{{color:var(--tx);background:var(--hv)}}
 
 footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-top:1px solid var(--bd);margin-top:2rem}}
+/* ── AI 资讯 ── */
+.ai-toolbar{{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}}
+.ai-filters{{display:flex;flex-wrap:wrap;gap:.4rem}}
+.ai-filter{{font-size:.78rem;padding:.3rem .75rem;border-radius:20px;border:1px solid var(--bd);color:var(--mu);cursor:pointer;transition:all .15s;user-select:none}}
+.ai-filter:hover{{border-color:var(--ac);color:var(--ac)}}
+.ai-filter.active{{background:var(--ac);border-color:var(--ac);color:#000;font-weight:600}}
+.ai-ts{{font-size:.73rem;color:var(--mu);white-space:nowrap}}
+.ai-day{{margin-bottom:1.5rem}}
+.ai-day-label{{font-size:.8rem;font-weight:700;color:var(--mu);padding:.3rem 0;border-bottom:1px solid var(--bd2);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}}
+.ai-day-label::before{{content:'';display:inline-block;width:3px;height:14px;background:var(--ac);border-radius:2px}}
+.ai-item{{display:flex;gap:.8rem;padding:.6rem .4rem;border-radius:6px;transition:background .15s;cursor:pointer;text-decoration:none;color:inherit}}
+.ai-item:hover{{background:var(--hv2)}}
+.ai-time{{font-size:.72rem;color:var(--mu);min-width:2.8rem;padding-top:.15rem;flex-shrink:0}}
+.ai-src{{font-size:.68rem;font-weight:700;padding:.1rem .35rem;border-radius:3px;background:rgba(88,166,255,.12);color:var(--ac);height:fit-content;flex-shrink:0;margin-top:.1rem}}
+.ai-content{{flex:1;min-width:0}}
+.ai-title{{font-size:.88rem;font-weight:600;line-height:1.5;color:var(--tx)}}
+.ai-desc{{font-size:.76rem;color:var(--mu);line-height:1.4;margin-top:.2rem;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}}
 @media(max-width:900px){{
   .layout{{grid-template-columns:1fr}}
   .sidebar{{display:none}}
@@ -242,6 +265,7 @@ def _nav():
     <div class="nav-tab" onclick="switchTab('dom',this)">&#127464;&#127475; 国内</div>
     <div class="nav-tab" onclick="switchTab('trend',this)">&#128293; 热点</div>
     <div class="nav-tab" onclick="switchTab('market',this)">&#128200; 行情</div>
+    <div class="nav-tab" onclick="switchTab('ai',this)">&#129302; AI资讯</div>
     <div class="nav-tab" onclick="switchTab('archive',this)">&#128218; 归档</div>
   </div>
 </nav>
@@ -350,7 +374,7 @@ def _panel_market():
       <div class="skel"></div><div class="skel"></div>
     </div>
   </div>
-  <p style="color:var(--mu);font-size:.73rem;margin-top:.5rem">数据来源：Yahoo Finance &nbsp;·&nbsp; 延迟约15分钟 &nbsp;·&nbsp; 每5分钟自动刷新</p>
+  <p style="color:var(--mu);font-size:.73rem;margin-top:.5rem">数据来源：Finnhub &nbsp;·&nbsp; 延迟约15分钟 &nbsp;·&nbsp; 每5分钟自动刷新</p>
 </div>"""
 
 
@@ -359,6 +383,29 @@ def _panel_archive():
 <div id="archive" class="panel">
   <div class="section-title">&#128218; 历史归档</div>
   <div class="archive-list" id="archive-list"></div>
+</div>"""
+
+
+def _panel_ai():
+    return """
+<div id="ai" class="panel">
+  <div class="ai-toolbar">
+    <div class="ai-filters" id="ai-filters">
+      <span class="ai-filter active" data-src="all" onclick="filterAI(this)">全部</span>
+      <span class="ai-filter" data-src="数字生命卡兹克" onclick="filterAI(this)">卡兹克</span>
+      <span class="ai-filter" data-src="量子位" onclick="filterAI(this)">量子位</span>
+      <span class="ai-filter" data-src="机器之心" onclick="filterAI(this)">机器之心</span>
+      <span class="ai-filter" data-src="新智元" onclick="filterAI(this)">新智元</span>
+      <span class="ai-filter" data-src="AI科技评论" onclick="filterAI(this)">AI科技评论</span>
+      <span class="ai-filter" data-src="硅星人Pro" onclick="filterAI(this)">硅星人</span>
+      <span class="ai-filter" data-src="AIGC开放社区" onclick="filterAI(this)">AIGC社区</span>
+      <span class="ai-filter" data-src="人工智能学家" onclick="filterAI(this)">AI学家</span>
+      <span class="ai-filter" data-src="差评" onclick="filterAI(this)">差评</span>
+      <span class="ai-filter" data-src="深度学习NLP" onclick="filterAI(this)">深度学习</span>
+    </div>
+    <span class="ai-ts" id="ai-ts"></span>
+  </div>
+  <div id="ai-timeline"></div>
 </div>"""
 
 
@@ -379,7 +426,7 @@ def _modal():
 def _footer(gen):
     return f"""
 <footer>
-  数据来源：Hacker News &middot; GitHub Trending &middot; 掘金 &middot; 微博 &middot; 知乎 &nbsp;|&nbsp;
+  数据来源：Hacker News &middot; GitHub Trending &middot; 掘金 &middot; 微博 &middot; 知乎 &middot; Finnhub &nbsp;|&nbsp;
   新闻每日 08:00 更新 &nbsp;·&nbsp; 行情实时拉取 &nbsp;|&nbsp;
   更新于 {gen}
 </footer>"""
@@ -422,10 +469,11 @@ function switchTab(id, el) {{
   if (id === 'market')  loadMarket(false);
   if (id === 'archive') renderArchive();
   if (id === 'overview') loadOverviewMarket();
+  if (id === 'ai') loadAI();
 }}
 function switchTabByName(id) {{
   const tabs = document.querySelectorAll('.nav-tab');
-  const panels = ['overview','intl','dom','trend','market','archive'];
+  const panels = ['overview','intl','dom','trend','market','ai','archive'];
   const idx = panels.indexOf(id);
   if (idx >= 0) switchTab(id, tabs[idx]);
 }}
@@ -546,6 +594,113 @@ document.getElementById('modal').addEventListener('click', e => {{ if (e.target 
 
 // 首页默认加载速览行情
 loadOverviewMarket();
+
+// ── AI 资讯 ──
+let aiData = null;
+let aiFilter = 'all';
+
+async function loadAI() {{
+  if (aiData) {{ renderAI(); return; }}
+  document.getElementById('ai-timeline').innerHTML = '<div class="empty">正在加载 AI 资讯...</div>';
+  try {{
+    const r = await fetch('data/ai_news.json?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    aiData = await r.json();
+    document.getElementById('ai-ts').textContent = '更新于 ' + (aiData.updated_at || '');
+    renderAI();
+  }} catch(e) {{
+    document.getElementById('ai-timeline').innerHTML = '<div class="empty">AI 资讯暂未生成，等待每日更新...</div>';
+  }}
+}}
+
+function filterAI(el) {{
+  document.querySelectorAll('.ai-filter').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  aiFilter = el.dataset.src;
+  renderAI();
+}}
+
+function renderAI() {{
+  if (!aiData) return;
+  let items = aiData.items || [];
+  if (aiFilter !== 'all') items = items.filter(x => x.source === aiFilter);
+  if (!items.length) {{
+    document.getElementById('ai-timeline').innerHTML = '<div class="empty">暂无数据</div>';
+    return;
+  }}
+  // 按日期分组
+  const groups = {{}};
+  items.forEach(item => {{
+    const d = item.date || '未知日期';
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(item);
+  }});
+  const dates = Object.keys(groups).sort((a,b) => b.localeCompare(a));
+  let html = '';
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  for (const date of dates) {{
+    const label = date === today ? '今天 ' + date : date === yesterday ? '昨天 ' + date : date;
+    html += `<div class="ai-day"><div class="ai-day-label">${{label}}</div>`;
+    for (const item of groups[date]) {{
+      const t = (item.title||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const d = (item.desc||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      html += `<a class="ai-item" href="${{item.url}}" target="_blank" rel="noopener">
+        <span class="ai-time">${{item.time||''}}</span>
+        <span class="ai-src">${{item.source||''}}</span>
+        <div class="ai-content">
+          <div class="ai-title">${{t}}</div>
+          ${{d ? `<div class="ai-desc">${{d}}</div>` : ''}}
+        </div>
+      </a>`;
+    }}
+    html += '</div>';
+  }}
+  document.getElementById('ai-timeline').innerHTML = html;
+}}
+let translateDone = false;
+async function translateCards() {{
+  if (translateDone) return;
+  const cards = document.querySelectorAll('[data-translate="1"]');
+  // 批量翻译，每批5条避免限速
+  const batch = 5;
+  for (let i = 0; i < cards.length; i += batch) {{
+    const slice = Array.from(cards).slice(i, i + batch);
+    await Promise.allSettled(slice.map(card => translateCard(card)));
+    await new Promise(r => setTimeout(r, 300));
+  }}
+  translateDone = true;
+}}
+
+async function translateCard(card) {{
+  const titleEl = card.querySelector('.card-title');
+  const zhEl    = card.querySelector('.card-zh');
+  if (!titleEl || !zhEl) return;
+  const enText = titleEl.textContent.trim();
+  if (!enText) return;
+  try {{
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=' + encodeURIComponent(enText);
+    const r = await fetch(url);
+    if (!r.ok) return;
+    const d = await r.json();
+    const zh = d[0]?.map(x => x[0]).join('') || '';
+    if (zh && zh !== enText) {{
+      // 原标题缩小变灰，中文标题显示为主
+      titleEl.classList.add('card-en');
+      titleEl.style.fontSize = '.75rem';
+      titleEl.style.color = 'var(--mu)';
+      zhEl.textContent = zh;
+      zhEl.style.display = 'block';
+    }}
+  }} catch(e) {{ /* 翻译失败静默跳过 */ }}
+}}
+
+// 切换到国际新闻时触发翻译
+const _origSwitch = switchTab;
+function switchTab(id, el) {{
+  _origSwitch(id, el);
+  if (id === 'intl') translateCards();
+}}
 </script>
 </body>
 </html>"""

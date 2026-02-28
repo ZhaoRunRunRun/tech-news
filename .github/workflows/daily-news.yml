@@ -1,29 +1,40 @@
-name: 每日科技新闻更新
+name: 日知录每日更新
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 北京时间 08:00
+    - cron: '0 0 * * *'   # 北京时间 08:00
+    - cron: '0 13 * * *'  # 北京时间 21:00
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  update-news:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 拉完整历史，避免 push 冲突
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: 抓取新闻
         run: python scripts/fetch_news.py
+
+      - name: 抓取 AI 公众号
+        run: python scripts/fetch_wechat_ai.py
+
       - name: 生成页面
         run: python scripts/generate_html.py
+
       - name: 提交推送
         run: |
-          git config user.name "TechNewsBot"
-          git config user.email "bot@tech-news"
+          git config user.name "RizhiluBot"
+          git config user.email "bot@rizhilu"
+          git pull --rebase origin main
           git add docs/
-          git diff --staged --quiet || git commit -m "📰 每日新闻更新 $(date +'%Y-%m-%d')"
+          git diff --staged --quiet || git commit -m "📰 日知录更新 $(date +'%Y-%m-%d %H:%M') CST"
           git push

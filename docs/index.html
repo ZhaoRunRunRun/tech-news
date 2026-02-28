@@ -64,6 +64,8 @@ a{color:inherit;text-decoration:none}
 .card-title{font-size:.88rem;font-weight:600;line-height:1.55;color:var(--tx)}
 .desc{font-size:.78rem;color:var(--mu);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-time{font-size:.7rem;color:var(--mu);margin-top:auto;padding-top:.2rem}
+.card-zh{font-size:.8rem;color:var(--ac);line-height:1.45;margin-top:.15rem;font-weight:500}
+.card-en{font-size:.75rem;color:var(--mu);line-height:1.4;margin-top:.1rem}
 .empty{color:var(--mu);padding:2rem;text-align:center;font-size:.85rem}
 
 /* ── 侧边栏 ── */
@@ -125,6 +127,23 @@ a{color:inherit;text-decoration:none}
 .modal-close:hover{color:var(--tx);background:var(--hv)}
 
 footer{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-top:1px solid var(--bd);margin-top:2rem}
+/* ── AI 资讯 ── */
+.ai-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
+.ai-filters{display:flex;flex-wrap:wrap;gap:.4rem}
+.ai-filter{font-size:.78rem;padding:.3rem .75rem;border-radius:20px;border:1px solid var(--bd);color:var(--mu);cursor:pointer;transition:all .15s;user-select:none}
+.ai-filter:hover{border-color:var(--ac);color:var(--ac)}
+.ai-filter.active{background:var(--ac);border-color:var(--ac);color:#000;font-weight:600}
+.ai-ts{font-size:.73rem;color:var(--mu);white-space:nowrap}
+.ai-day{margin-bottom:1.5rem}
+.ai-day-label{font-size:.8rem;font-weight:700;color:var(--mu);padding:.3rem 0;border-bottom:1px solid var(--bd2);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.ai-day-label::before{content:'';display:inline-block;width:3px;height:14px;background:var(--ac);border-radius:2px}
+.ai-item{display:flex;gap:.8rem;padding:.6rem .4rem;border-radius:6px;transition:background .15s;cursor:pointer;text-decoration:none;color:inherit}
+.ai-item:hover{background:var(--hv2)}
+.ai-time{font-size:.72rem;color:var(--mu);min-width:2.8rem;padding-top:.15rem;flex-shrink:0}
+.ai-src{font-size:.68rem;font-weight:700;padding:.1rem .35rem;border-radius:3px;background:rgba(88,166,255,.12);color:var(--ac);height:fit-content;flex-shrink:0;margin-top:.1rem}
+.ai-content{flex:1;min-width:0}
+.ai-title{font-size:.88rem;font-weight:600;line-height:1.5;color:var(--tx)}
+.ai-desc{font-size:.76rem;color:var(--mu);line-height:1.4;margin-top:.2rem;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 @media(max-width:900px){
   .layout{grid-template-columns:1fr}
   .sidebar{display:none}
@@ -158,6 +177,7 @@ footer{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-to
     <div class="nav-tab" onclick="switchTab('dom',this)">&#127464;&#127475; 国内</div>
     <div class="nav-tab" onclick="switchTab('trend',this)">&#128293; 热点</div>
     <div class="nav-tab" onclick="switchTab('market',this)">&#128200; 行情</div>
+    <div class="nav-tab" onclick="switchTab('ai',this)">&#129302; AI资讯</div>
     <div class="nav-tab" onclick="switchTab('archive',this)">&#128218; 归档</div>
   </div>
 </nav>
@@ -193,7 +213,7 @@ footer{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-to
   <div class="layout">
     <div>
       <div class="section-title">&#127760; 国际新闻</div>
-      <div class="cards"><a class="card" href="https://notdivided.org" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 1809</span></div><div class="card-title">We Will Not Be Divided</div><div class="card-time">08:54</div></a><a class="card" href="https://www.anthropic.com/news/statement-comments-secretary-war" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 973</span></div><div class="card-title">Statement on the comments from Secretary of War Pete Hegseth</div><div class="card-time">09:20</div></a><a class="card" href="https://twitter.com/sama/status/2027578652477821175" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 784</span></div><div class="card-title">OpenAI agrees with Dept. of War to deploy models in their classified network</div><div class="card-time">10:59</div></a><a class="card" href="https://www.pcgamer.com/software/operating-systems/a-new-california-law-says-all-operating-systems-including-linux-need-to-have-some-form-of-age-verification-at-account-setup/" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 604</span></div><div class="card-title">A new California law says all operating systems need to have age verification</div><div class="card-time">22:55</div></a><a class="card" href="https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 499</span></div><div class="card-title">OpenAI raises $110B on $730B pre-money valuation</div><div class="card-time">22:56</div></a><a class="card" href="https://blog.cloudflare.com/a-better-web-streams-api/" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 414</span></div><div class="card-title">A better streams API is possible for JavaScript</div><div class="card-time">22:02</div></a><a class="card" href="https://glashrvatske.hrt.hr/en/domestic/croatia-declared-free-of-landmines-after-31-years-12593533" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 329</span></div><div class="card-title">Croatia declared free of landmines after 31 years</div><div class="card-time">10:48</div></a><a class="card" href="https://www.cbsnews.com/news/nasa-artemis-moon-program-overhaul/" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 260</span></div><div class="card-title">NASA announces overhaul of Artemis program amid safety concerns, delays</div><div class="card-time">00:33</div></a><a class="card" href="https://www.cnn.com/2026/02/25/politics/chatgpt-china-intimidation-operation" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 213</span></div><div class="card-title">A Chinese official’s use of ChatGPT revealed an intimidation operation</div><div class="card-time">23:52</div></a><a class="card" href="https://www.cnn.com/2026/02/28/middleeast/israel-attack-iran-intl-hnk" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 205</span></div><div class="card-title">US and Israel launch strikes on Iran, as Trump says ‘massive’ campaign underway</div><div class="card-time">14:34</div></a><a class="card" href="https://github.com/c3d/db48x/commit/7819972b641ac808d46c54d3f5d1df70d706d286" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 188</span></div><div class="card-title">Open source calculator firmware DB48X forbids CA/CO use due to age verification</div><div class="card-time">23:37</div></a><a class="card" href="https://github.com/anadim/AdderBoard" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 170</span></div><div class="card-title">Smallest transformer that can add two 10-digit numbers</div><div class="card-time">02:29</div></a><a class="card" href="https://help.openai.com/en/articles/6378407-how-to-delete-your-account" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 143</span></div><div class="card-title">OpenAI – How to delete your account</div><div class="card-time">18:41</div></a><a class="card" href="https://www.science.org/doi/10.1126/science.adt2760" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 87</span></div><div class="card-title">Qt45: A small polymerase ribozyme that can synthesize itself</div><div class="card-time">07:42</div></a><a class="card" href="https://computer.rip/2026-02-27-ibm-atm.html" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 66</span></div><div class="card-title">Cash issuing terminals</div><div class="card-time">13:21</div></a><a class="card" href="https://github.com/moeru-ai/airi" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">moeru-ai / airi</div><p class="desc">💖🧸 Self hosted, you-owned Grok Companion, a container of souls of waifu, cyber livings to bring them</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">anthropics / claude-code</div><p class="desc">Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and he</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/tukaani-project/xz" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">tukaani-project / xz</div><p class="desc">XZ Utils</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/Shubhamsaboo/awesome-llm-apps" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">Shubhamsaboo / awesome-llm-apps</div><p class="desc">Collection of awesome LLM apps with AI Agents and RAG using OpenAI, Anthropic, Gemini and opensource</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/ruvnet/ruflo" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">ruvnet / ruflo</div><p class="desc">🌊 The leading agent orchestration platform for Claude. Deploy intelligent multi-agent swarms, coordi</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">bytedance / deer-flow</div><p class="desc">An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, m</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/Wei-Shaw/claude-relay-service" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">Wei-Shaw / claude-relay-service</div><p class="desc">CRS-自建Claude Code镜像，一站式开源中转服务，让 Claude、OpenAI、Gemini、Droid 订阅统一接入，支持拼车共享，更高效分摊成本，原生工具无缝使用。</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">NousResearch / hermes-agent</div><p class="desc">IDE for the AI Agents Era - Run an army of Claude Code, Codex, etc. on your machine</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/superset-sh/superset" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">superset-sh / superset</div><p class="desc">Fast and accurate automatic speech recognition (ASR) for edge devices</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/moonshine-ai/moonshine" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">moonshine-ai / moonshine</div><p class="desc">PArallel Distributed Deep LEarning: Machine Learning Framework from Industrial Practice （『飞桨』核心框架，深度</p><div class="card-time">2026-02-28</div></a></div>
+      <div class="cards"><a class="card" href="https://notdivided.org" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 1809</span></div><div class="card-title">We Will Not Be Divided</div><div class="card-zh" style="display:none"></div><div class="card-time">08:54</div></a><a class="card" href="https://www.anthropic.com/news/statement-comments-secretary-war" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 973</span></div><div class="card-title">Statement on the comments from Secretary of War Pete Hegseth</div><div class="card-zh" style="display:none"></div><div class="card-time">09:20</div></a><a class="card" href="https://twitter.com/sama/status/2027578652477821175" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 784</span></div><div class="card-title">OpenAI agrees with Dept. of War to deploy models in their classified network</div><div class="card-zh" style="display:none"></div><div class="card-time">10:59</div></a><a class="card" href="https://www.pcgamer.com/software/operating-systems/a-new-california-law-says-all-operating-systems-including-linux-need-to-have-some-form-of-age-verification-at-account-setup/" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 604</span></div><div class="card-title">A new California law says all operating systems need to have age verification</div><div class="card-zh" style="display:none"></div><div class="card-time">22:55</div></a><a class="card" href="https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 499</span></div><div class="card-title">OpenAI raises $110B on $730B pre-money valuation</div><div class="card-zh" style="display:none"></div><div class="card-time">22:56</div></a><a class="card" href="https://blog.cloudflare.com/a-better-web-streams-api/" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 414</span></div><div class="card-title">A better streams API is possible for JavaScript</div><div class="card-zh" style="display:none"></div><div class="card-time">22:02</div></a><a class="card" href="https://glashrvatske.hrt.hr/en/domestic/croatia-declared-free-of-landmines-after-31-years-12593533" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 329</span></div><div class="card-title">Croatia declared free of landmines after 31 years</div><div class="card-zh" style="display:none"></div><div class="card-time">10:48</div></a><a class="card" href="https://www.cbsnews.com/news/nasa-artemis-moon-program-overhaul/" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 260</span></div><div class="card-title">NASA announces overhaul of Artemis program amid safety concerns, delays</div><div class="card-zh" style="display:none"></div><div class="card-time">00:33</div></a><a class="card" href="https://www.cnn.com/2026/02/25/politics/chatgpt-china-intimidation-operation" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 213</span></div><div class="card-title">A Chinese official’s use of ChatGPT revealed an intimidation operation</div><div class="card-zh" style="display:none"></div><div class="card-time">23:52</div></a><a class="card" href="https://www.cnn.com/2026/02/28/middleeast/israel-attack-iran-intl-hnk" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 205</span></div><div class="card-title">US and Israel launch strikes on Iran, as Trump says ‘massive’ campaign underway</div><div class="card-zh" style="display:none"></div><div class="card-time">14:34</div></a><a class="card" href="https://github.com/c3d/db48x/commit/7819972b641ac808d46c54d3f5d1df70d706d286" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 188</span></div><div class="card-title">Open source calculator firmware DB48X forbids CA/CO use due to age verification</div><div class="card-zh" style="display:none"></div><div class="card-time">23:37</div></a><a class="card" href="https://github.com/anadim/AdderBoard" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 170</span></div><div class="card-title">Smallest transformer that can add two 10-digit numbers</div><div class="card-zh" style="display:none"></div><div class="card-time">02:29</div></a><a class="card" href="https://help.openai.com/en/articles/6378407-how-to-delete-your-account" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 143</span></div><div class="card-title">OpenAI – How to delete your account</div><div class="card-zh" style="display:none"></div><div class="card-time">18:41</div></a><a class="card" href="https://www.science.org/doi/10.1126/science.adt2760" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 87</span></div><div class="card-title">Qt45: A small polymerase ribozyme that can synthesize itself</div><div class="card-zh" style="display:none"></div><div class="card-time">07:42</div></a><a class="card" href="https://computer.rip/2026-02-27-ibm-atm.html" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-hn">Hacker News</span><span class="score">&#9650; 66</span></div><div class="card-title">Cash issuing terminals</div><div class="card-zh" style="display:none"></div><div class="card-time">13:21</div></a><a class="card" href="https://github.com/moeru-ai/airi" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">moeru-ai / airi</div><div class="card-zh" style="display:none"></div><p class="desc">💖🧸 Self hosted, you-owned Grok Companion, a container of souls of waifu, cyber livings to bring them</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">anthropics / claude-code</div><div class="card-zh" style="display:none"></div><p class="desc">Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and he</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/tukaani-project/xz" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">tukaani-project / xz</div><div class="card-zh" style="display:none"></div><p class="desc">XZ Utils</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/Shubhamsaboo/awesome-llm-apps" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">Shubhamsaboo / awesome-llm-apps</div><div class="card-zh" style="display:none"></div><p class="desc">Collection of awesome LLM apps with AI Agents and RAG using OpenAI, Anthropic, Gemini and opensource</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/ruvnet/ruflo" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">ruvnet / ruflo</div><div class="card-zh" style="display:none"></div><p class="desc">🌊 The leading agent orchestration platform for Claude. Deploy intelligent multi-agent swarms, coordi</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">bytedance / deer-flow</div><div class="card-zh" style="display:none"></div><p class="desc">An open-source SuperAgent harness that researches, codes, and creates. With the help of sandboxes, m</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/Wei-Shaw/claude-relay-service" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">Wei-Shaw / claude-relay-service</div><div class="card-zh" style="display:none"></div><p class="desc">CRS-自建Claude Code镜像，一站式开源中转服务，让 Claude、OpenAI、Gemini、Droid 订阅统一接入，支持拼车共享，更高效分摊成本，原生工具无缝使用。</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">NousResearch / hermes-agent</div><div class="card-zh" style="display:none"></div><p class="desc">IDE for the AI Agents Era - Run an army of Claude Code, Codex, etc. on your machine</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/superset-sh/superset" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">superset-sh / superset</div><div class="card-zh" style="display:none"></div><p class="desc">Fast and accurate automatic speech recognition (ASR) for edge devices</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://github.com/moonshine-ai/moonshine" target="_blank" rel="noopener" data-translate="1"><div class="card-top"><span class="tag tag-default">GitHub Trending</span></div><div class="card-title">moonshine-ai / moonshine</div><div class="card-zh" style="display:none"></div><p class="desc">PArallel Distributed Deep LEarning: Machine Learning Framework from Industrial Practice （『飞桨』核心框架，深度</p><div class="card-time">2026-02-28</div></a></div>
     </div>
     <div class="sidebar" id="sidebar-intl"></div>
   </div>
@@ -202,7 +222,7 @@ footer{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-to
   <div class="layout">
     <div>
       <div class="section-title">&#127464;&#127475; 国内资讯</div>
-      <div class="cards"><a class="card" href="https://juejin.cn/post/7573172586839834676" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 332</span></div><div class="card-title">我为什么说全栈正在杀死前端？</div><p class="desc">大家好，我又来了🤣。 打开2025年的招聘软件，十个资深前端岗位，有八个在JD（职位描述）里写着：“有Node.js/Serverless/全栈经验者优先”。 </p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7610253888646119467" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 23</span></div><div class="card-title">vue文件自动生成路由会成为主流</div><p class="desc">vue-router悄悄发布了5.0版本，用官方的话说，V5 是一个过渡版本，它将unplugin-vue-router（基于文件的路由）合并到了核心包中，就是</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611165150922752050" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 1</span></div><div class="card-title">Everything Claude Code 速查指南</div><p class="desc">这是黑客松冠军日常使用 10 个月后的完整配置：技能（skills）、钩子（hooks）、子代理（subagents）、MCP、插件（plugins），以及真正</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611232470153199656" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 5</span></div><div class="card-title">前端组件库开发实践：从零到发布</div><p class="desc">为什么要搞自己的组件库？ 先说说一些开发的名场面，看看你有没有中招： 新开一个项目，复制粘贴上个项目的 components 文件夹，改改名字接着用； 三个项目</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7581428845683179563" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 3</span></div><div class="card-title">Git提交信息太乱？AI一键美化！一行命令拯救你的项目历史🚀</div><p class="desc">git-rewrite-commits 用 AI 自动重写杂乱的 Git 提交信息。支持 Ollama 本地或云端模型，只需一行命令，即可规范化整个提交历史，再</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611354028867076111" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span></div><div class="card-title">tanstack query的基本使用</div><p class="desc">一.为什么要使用tanstack query？ 显式的来看：主要是可以简化代码，可以看下面的一个例子，这是一个我们经常用的发送请求的一个过程，包括了请求数据，加</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7579427549472014382" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 73</span></div><div class="card-title">拒绝 rem 计算！Vue3 大屏适配，我是这样做的 (vfit 使用体验)</div><p class="desc">最近公司又接了个数据可视化大屏的需求，设计稿是标准的 1920 x 1080。 拿到设计稿的那一刻，我的内心是拒绝的... 🤯 大家都知道，做大屏适配最烦的就是</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7575119254314401818" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 45</span></div><div class="card-title">HTML5 自定义属性 data-*：别再把数据塞进 class 里了！</div><p class="desc">还在用 `&lt;div class=&quot;user-card id-123 status-active&quot;&gt;` 这种“歪门邪道”存数据吗？是时候让 HTML5 的 自定义</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611753894969638921" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span></div><div class="card-title">[前端特效] 左滑显示按钮的实现介绍</div><p class="desc">最近在开发「Todo-List」应用，今天想介绍下一个前端特效 - 左滑显示按钮组的实现。 精简后的代码已提交至Github-Gist：slide-item-d</p><div class="card-time">2026-02-28</div></a></div>
+      <div class="cards"><a class="card" href="https://juejin.cn/post/7573172586839834676" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 332</span></div><div class="card-title">我为什么说全栈正在杀死前端？</div><div class="card-zh" style="display:none"></div><p class="desc">大家好，我又来了🤣。 打开2025年的招聘软件，十个资深前端岗位，有八个在JD（职位描述）里写着：“有Node.js/Serverless/全栈经验者优先”。 </p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7610253888646119467" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 23</span></div><div class="card-title">vue文件自动生成路由会成为主流</div><div class="card-zh" style="display:none"></div><p class="desc">vue-router悄悄发布了5.0版本，用官方的话说，V5 是一个过渡版本，它将unplugin-vue-router（基于文件的路由）合并到了核心包中，就是</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611165150922752050" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 1</span></div><div class="card-title">Everything Claude Code 速查指南</div><div class="card-zh" style="display:none"></div><p class="desc">这是黑客松冠军日常使用 10 个月后的完整配置：技能（skills）、钩子（hooks）、子代理（subagents）、MCP、插件（plugins），以及真正</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611232470153199656" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 5</span></div><div class="card-title">前端组件库开发实践：从零到发布</div><div class="card-zh" style="display:none"></div><p class="desc">为什么要搞自己的组件库？ 先说说一些开发的名场面，看看你有没有中招： 新开一个项目，复制粘贴上个项目的 components 文件夹，改改名字接着用； 三个项目</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7581428845683179563" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 3</span></div><div class="card-title">Git提交信息太乱？AI一键美化！一行命令拯救你的项目历史🚀</div><div class="card-zh" style="display:none"></div><p class="desc">git-rewrite-commits 用 AI 自动重写杂乱的 Git 提交信息。支持 Ollama 本地或云端模型，只需一行命令，即可规范化整个提交历史，再</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611354028867076111" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span></div><div class="card-title">tanstack query的基本使用</div><div class="card-zh" style="display:none"></div><p class="desc">一.为什么要使用tanstack query？ 显式的来看：主要是可以简化代码，可以看下面的一个例子，这是一个我们经常用的发送请求的一个过程，包括了请求数据，加</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7579427549472014382" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 73</span></div><div class="card-title">拒绝 rem 计算！Vue3 大屏适配，我是这样做的 (vfit 使用体验)</div><div class="card-zh" style="display:none"></div><p class="desc">最近公司又接了个数据可视化大屏的需求，设计稿是标准的 1920 x 1080。 拿到设计稿的那一刻，我的内心是拒绝的... 🤯 大家都知道，做大屏适配最烦的就是</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7575119254314401818" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span><span class="score">&#9650; 45</span></div><div class="card-title">HTML5 自定义属性 data-*：别再把数据塞进 class 里了！</div><div class="card-zh" style="display:none"></div><p class="desc">还在用 `&lt;div class=&quot;user-card id-123 status-active&quot;&gt;` 这种“歪门邪道”存数据吗？是时候让 HTML5 的 自定义</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611753894969638921" target="_blank" rel="noopener"><div class="card-top"><span class="tag tag-jj">掘金</span></div><div class="card-title">[前端特效] 左滑显示按钮的实现介绍</div><div class="card-zh" style="display:none"></div><p class="desc">最近在开发「Todo-List」应用，今天想介绍下一个前端特效 - 左滑显示按钮组的实现。 精简后的代码已提交至Github-Gist：slide-item-d</p><div class="card-time">2026-02-28</div></a></div>
     </div>
     <div class="sidebar" id="sidebar-dom"></div>
   </div>
@@ -234,7 +254,26 @@ footer{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-to
       <div class="skel"></div><div class="skel"></div>
     </div>
   </div>
-  <p style="color:var(--mu);font-size:.73rem;margin-top:.5rem">数据来源：Yahoo Finance &nbsp;·&nbsp; 延迟约15分钟 &nbsp;·&nbsp; 每5分钟自动刷新</p>
+  <p style="color:var(--mu);font-size:.73rem;margin-top:.5rem">数据来源：Finnhub &nbsp;·&nbsp; 延迟约15分钟 &nbsp;·&nbsp; 每5分钟自动刷新</p>
+</div>
+<div id="ai" class="panel">
+  <div class="ai-toolbar">
+    <div class="ai-filters" id="ai-filters">
+      <span class="ai-filter active" data-src="all" onclick="filterAI(this)">全部</span>
+      <span class="ai-filter" data-src="数字生命卡兹克" onclick="filterAI(this)">卡兹克</span>
+      <span class="ai-filter" data-src="量子位" onclick="filterAI(this)">量子位</span>
+      <span class="ai-filter" data-src="机器之心" onclick="filterAI(this)">机器之心</span>
+      <span class="ai-filter" data-src="新智元" onclick="filterAI(this)">新智元</span>
+      <span class="ai-filter" data-src="AI科技评论" onclick="filterAI(this)">AI科技评论</span>
+      <span class="ai-filter" data-src="硅星人Pro" onclick="filterAI(this)">硅星人</span>
+      <span class="ai-filter" data-src="AIGC开放社区" onclick="filterAI(this)">AIGC社区</span>
+      <span class="ai-filter" data-src="人工智能学家" onclick="filterAI(this)">AI学家</span>
+      <span class="ai-filter" data-src="差评" onclick="filterAI(this)">差评</span>
+      <span class="ai-filter" data-src="深度学习NLP" onclick="filterAI(this)">深度学习</span>
+    </div>
+    <span class="ai-ts" id="ai-ts"></span>
+  </div>
+  <div id="ai-timeline"></div>
 </div>
 <div id="archive" class="panel">
   <div class="section-title">&#128218; 历史归档</div>
@@ -251,7 +290,7 @@ footer{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-to
   </div>
 </div>
 <footer>
-  数据来源：Hacker News &middot; GitHub Trending &middot; 掘金 &middot; 微博 &middot; 知乎 &nbsp;|&nbsp;
+  数据来源：Hacker News &middot; GitHub Trending &middot; 掘金 &middot; 微博 &middot; 知乎 &middot; Finnhub &nbsp;|&nbsp;
   新闻每日 08:00 更新 &nbsp;·&nbsp; 行情实时拉取 &nbsp;|&nbsp;
   更新于 2026-02-28 19:51:58 CST
 </footer>
@@ -290,10 +329,11 @@ function switchTab(id, el) {
   if (id === 'market')  loadMarket(false);
   if (id === 'archive') renderArchive();
   if (id === 'overview') loadOverviewMarket();
+  if (id === 'ai') loadAI();
 }
 function switchTabByName(id) {
   const tabs = document.querySelectorAll('.nav-tab');
-  const panels = ['overview','intl','dom','trend','market','archive'];
+  const panels = ['overview','intl','dom','trend','market','ai','archive'];
   const idx = panels.indexOf(id);
   if (idx >= 0) switchTab(id, tabs[idx]);
 }
@@ -414,6 +454,113 @@ document.getElementById('modal').addEventListener('click', e => { if (e.target =
 
 // 首页默认加载速览行情
 loadOverviewMarket();
+
+// ── AI 资讯 ──
+let aiData = null;
+let aiFilter = 'all';
+
+async function loadAI() {
+  if (aiData) { renderAI(); return; }
+  document.getElementById('ai-timeline').innerHTML = '<div class="empty">正在加载 AI 资讯...</div>';
+  try {
+    const r = await fetch('data/ai_news.json?t=' + Date.now());
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    aiData = await r.json();
+    document.getElementById('ai-ts').textContent = '更新于 ' + (aiData.updated_at || '');
+    renderAI();
+  } catch(e) {
+    document.getElementById('ai-timeline').innerHTML = '<div class="empty">AI 资讯暂未生成，等待每日更新...</div>';
+  }
+}
+
+function filterAI(el) {
+  document.querySelectorAll('.ai-filter').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  aiFilter = el.dataset.src;
+  renderAI();
+}
+
+function renderAI() {
+  if (!aiData) return;
+  let items = aiData.items || [];
+  if (aiFilter !== 'all') items = items.filter(x => x.source === aiFilter);
+  if (!items.length) {
+    document.getElementById('ai-timeline').innerHTML = '<div class="empty">暂无数据</div>';
+    return;
+  }
+  // 按日期分组
+  const groups = {};
+  items.forEach(item => {
+    const d = item.date || '未知日期';
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(item);
+  });
+  const dates = Object.keys(groups).sort((a,b) => b.localeCompare(a));
+  let html = '';
+  const today = new Date().toISOString().slice(0,10);
+  const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
+  for (const date of dates) {
+    const label = date === today ? '今天 ' + date : date === yesterday ? '昨天 ' + date : date;
+    html += `<div class="ai-day"><div class="ai-day-label">${label}</div>`;
+    for (const item of groups[date]) {
+      const t = (item.title||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const d = (item.desc||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      html += `<a class="ai-item" href="${item.url}" target="_blank" rel="noopener">
+        <span class="ai-time">${item.time||''}</span>
+        <span class="ai-src">${item.source||''}</span>
+        <div class="ai-content">
+          <div class="ai-title">${t}</div>
+          ${d ? `<div class="ai-desc">${d}</div>` : ''}
+        </div>
+      </a>`;
+    }
+    html += '</div>';
+  }
+  document.getElementById('ai-timeline').innerHTML = html;
+}
+let translateDone = false;
+async function translateCards() {
+  if (translateDone) return;
+  const cards = document.querySelectorAll('[data-translate="1"]');
+  // 批量翻译，每批5条避免限速
+  const batch = 5;
+  for (let i = 0; i < cards.length; i += batch) {
+    const slice = Array.from(cards).slice(i, i + batch);
+    await Promise.allSettled(slice.map(card => translateCard(card)));
+    await new Promise(r => setTimeout(r, 300));
+  }
+  translateDone = true;
+}
+
+async function translateCard(card) {
+  const titleEl = card.querySelector('.card-title');
+  const zhEl    = card.querySelector('.card-zh');
+  if (!titleEl || !zhEl) return;
+  const enText = titleEl.textContent.trim();
+  if (!enText) return;
+  try {
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q=' + encodeURIComponent(enText);
+    const r = await fetch(url);
+    if (!r.ok) return;
+    const d = await r.json();
+    const zh = d[0]?.map(x => x[0]).join('') || '';
+    if (zh && zh !== enText) {
+      // 原标题缩小变灰，中文标题显示为主
+      titleEl.classList.add('card-en');
+      titleEl.style.fontSize = '.75rem';
+      titleEl.style.color = 'var(--mu)';
+      zhEl.textContent = zh;
+      zhEl.style.display = 'block';
+    }
+  } catch(e) { /* 翻译失败静默跳过 */ }
+}
+
+// 切换到国际新闻时触发翻译
+const _origSwitch = switchTab;
+function switchTab(id, el) {
+  _origSwitch(id, el);
+  if (id === 'intl') translateCards();
+}
 </script>
 </body>
 </html>
