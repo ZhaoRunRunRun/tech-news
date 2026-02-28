@@ -30,6 +30,9 @@ jobs:
       - name: 抓取历史股价
         run: python scripts/fetch_stock_history.py
 
+      - name: 生成 AI 日报
+        run: python scripts/generate_daily_report.py
+
       - name: 生成页面
         run: python scripts/generate_html.py
 

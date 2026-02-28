@@ -122,33 +122,64 @@ def fetch_juejin():
 
 # ── 实时热点 ──────────────────────────────────────────────
 def fetch_weibo_hot():
-    """百度实时热搜（替代微博，服务器可访问）"""
+    """微博实时热搜"""
     items = []
     try:
         req = urllib.request.Request(
-            "https://top.baidu.com/api/board?tab=realtime&_=1",
-            headers={"User-Agent": "Mozilla/5.0", "Referer": "https://top.baidu.com/"}
+            "https://weibo.com/ajax/side/hotSearch",
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+                "Referer": "https://weibo.com/",
+                "Accept": "application/json, text/plain, */*",
+            }
         )
         with urllib.request.urlopen(req, timeout=12) as r:
             data = json.loads(r.read().decode("utf-8", "ignore"))
-        content = data["data"]["cards"][0]["content"]
-        for item in content[:20]:
-            title = item.get("word", "") or item.get("query", "")
-            url   = item.get("appUrl", "") or f"https://www.baidu.com/s?wd={urllib.parse.quote(title)}"
-            desc  = item.get("desc", "")[:80]
-            if not title:
+        realtime = data.get("data", {}).get("realtime", [])
+        for item in realtime[:50]:
+            # 跳过广告
+            if item.get("is_ad"):
                 continue
+            word = item.get("word", "")
+            note = item.get("note", word)
+            if not word:
+                continue
+            scheme = item.get("word_scheme", "")
+            url = f"https://s.weibo.com/weibo?q={urllib.parse.quote(scheme or word)}"
+            label = item.get("label_name", "")
             items.append({
-                "title": title,
+                "title": note or word,
                 "url": url,
-                "source": "百度热搜",
-                "score": item.get("hotScore", 0),
+                "source": "微博热搜",
+                "score": item.get("num", 0),
                 "time": datetime.now(CST).strftime("%H:%M"),
                 "category": "trending",
-                "desc": desc
+                "desc": f"#{label}# 热度 {item.get('num',0):,}" if label else f"热度 {item.get('num',0):,}",
             })
     except Exception as e:
-        print(f"[WARN] 百度热搜: {e}")
+        print(f"[WARN] 微博热搜: {e}")
+        # fallback 百度热搜
+        try:
+            req2 = urllib.request.Request(
+                "https://top.baidu.com/api/board?tab=realtime&_=1",
+                headers={"User-Agent": "Mozilla/5.0", "Referer": "https://top.baidu.com/"}
+            )
+            with urllib.request.urlopen(req2, timeout=12) as r:
+                data2 = json.loads(r.read().decode("utf-8", "ignore"))
+            content = data2["data"]["cards"][0]["content"]
+            for item in content[:20]:
+                title = item.get("word", "") or item.get("query", "")
+                url   = item.get("appUrl", "") or f"https://www.baidu.com/s?wd={urllib.parse.quote(title)}"
+                if not title:
+                    continue
+                items.append({
+                    "title": title, "url": url, "source": "百度热搜",
+                    "score": item.get("hotScore", 0),
+                    "time": datetime.now(CST).strftime("%H:%M"),
+                    "category": "trending", "desc": item.get("desc", "")[:80]
+                })
+        except Exception as e2:
+            print(f"[WARN] 百度热搜 fallback: {e2}")
     return items
 
 def fetch_zhihu_hot():

@@ -336,6 +336,13 @@ footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-t
 .focus-summary-title{{font-size:.88rem;font-weight:700;color:var(--rd)}}
 .focus-summary-note{{font-size:.72rem;color:var(--mu);margin-top:.2rem}}
 .focus-cards{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem}}
+/* ── AI 日报内容 ── */
+.dr-meta{{font-size:.72rem;color:var(--mu);margin-bottom:1rem;padding:.4rem .8rem;background:rgba(188,140,255,.08);border-radius:6px;border-left:3px solid var(--pu)}}
+.dr-content{{line-height:1.8;color:var(--tx)}}
+.dr-h2{{font-size:1.1rem;font-weight:800;color:var(--tx);margin:1.5rem 0 .6rem;padding-bottom:.4rem;border-bottom:2px solid var(--ac)}}
+.dr-h3{{font-size:.95rem;font-weight:700;color:var(--ac);margin:1.2rem 0 .5rem}}
+.dr-p{{font-size:.88rem;color:var(--tx);margin:.5rem 0;line-height:1.8}}
+.dr-hr{{border:none;border-top:1px solid var(--bd2);margin:1rem 0}}
 .ai-view-btn{{font-size:.75rem;padding:.28rem .7rem;border-radius:4px;border:1px solid var(--bd);color:var(--mu);cursor:pointer;transition:all .15s;user-select:none}}
 .ai-view-btn:hover{{border-color:var(--ac);color:var(--ac)}}
 .ai-view-btn.active{{background:var(--ac);border-color:var(--ac);color:#000;font-weight:700}}
@@ -1459,6 +1466,32 @@ document.getElementById('daily-modal').addEventListener('click', e => {{
 
 function renderDailyReport() {{
   const body = document.getElementById('daily-body');
+  body.innerHTML = '<div class="empty">加载中...</div>';
+  fetch('data/daily_report.json?t=' + Date.now())
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {{
+      if (!d || !d.report) {{
+        // fallback: 从 DOM 卡片整理
+        body.innerHTML = renderDailyFromDOM();
+        return;
+      }}
+      const gen = d.generated_at || '';
+      // 将 markdown 格式转为 HTML
+      let html = d.report
+        .replace(/^## (.+)$/gm, '<h3 class="dr-h3">$1</h3>')
+        .replace(/^# (.+)$/gm, '<h2 class="dr-h2">$1</h2>')
+        .replace(/^---$/gm, '<hr class="dr-hr">')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '</p><p class="dr-p">')
+        .replace(/\n/g, '<br>');
+      body.innerHTML = `
+        <div class="dr-meta">AI 生成 · ${{gen}} · claude-sonnet-4-6</div>
+        <div class="dr-content"><p class="dr-p">${{html}}</p></div>`;
+    }})
+    .catch(() => {{ body.innerHTML = renderDailyFromDOM(); }});
+}}
+
+function renderDailyFromDOM() {{
   const intlCards  = Array.from(document.querySelectorAll('#intl .card'));
   const domCards   = Array.from(document.querySelectorAll('#dom .card'));
   const trendCards = Array.from(document.querySelectorAll('#trend .card'));
@@ -1476,14 +1509,13 @@ function renderDailyReport() {{
     }}).join('');
   }}
   const today = document.getElementById('hd-date')?.textContent?.replace('📅 ','') || '';
-  const total = document.getElementById('hd-total')?.textContent || '';
-  let html = `<div style="font-size:.8rem;color:var(--mu);margin-bottom:1.2rem">${{today}} &nbsp;·&nbsp; ${{total}} &nbsp;·&nbsp; 由日知录自动整理</div>`;
+  let html = `<div style="font-size:.8rem;color:var(--mu);margin-bottom:1.2rem">${{today}} · 由日知录自动整理</div>`;
   if (intlCards.length)  html += `<div class="daily-section"><h3>🌍 国际科技</h3>${{cardsToItems(intlCards,8)}}</div>`;
   if (domCards.length)   html += `<div class="daily-section"><h3>🇨🇳 国内资讯</h3>${{cardsToItems(domCards,8)}}</div>`;
   if (trendCards.length) html += `<div class="daily-section"><h3>🔥 热点话题</h3>${{cardsToItems(trendCards,8)}}</div>`;
   if (!intlCards.length && !domCards.length && !trendCards.length)
     html = '<div class="empty">暂无今日数据</div>';
-  body.innerHTML = html;
+  return html;
 }}
 </script>
 </body>
