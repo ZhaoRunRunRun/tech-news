@@ -4,7 +4,7 @@
 
 ## 访问地址
 
-🌐 https://143709123.xyz/news
+🌐 https://zhaorunrunrun.github.io/tech-news/
 
 ## 数据来源
 
