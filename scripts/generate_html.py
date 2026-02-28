@@ -331,11 +331,35 @@ footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-t
 .focus-topic{{font-size:.78rem;padding:.3rem .85rem;border-radius:20px;border:1px solid var(--bd);color:var(--mu);cursor:pointer;transition:all .15s;user-select:none}}
 .focus-topic:hover{{border-color:var(--rd);color:var(--rd)}}
 .focus-topic.active{{background:var(--rd);border-color:var(--rd);color:#fff;font-weight:600}}
+.focus-topic-custom{{border-style:dashed;border-color:var(--ac);color:var(--ac)}}
+.focus-topic-custom:hover{{background:var(--ac);color:#000;border-style:solid}}
+.focus-topic-del{{display:inline-block;margin-left:.3rem;opacity:.6;font-size:.7rem}}
+.focus-topic-del:hover{{opacity:1;color:#f85149}}
+.focus-add-btn{{font-size:.78rem;padding:.3rem .85rem;border-radius:20px;border:1px dashed var(--mu);color:var(--mu);cursor:pointer;transition:all .15s;user-select:none;background:none}}
+.focus-add-btn:hover{{border-color:var(--ac);color:var(--ac)}}
+.focus-add-modal{{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center}}
+.focus-add-modal.open{{display:flex}}
+.focus-add-box{{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:1.5rem;width:min(380px,90vw)}}
+.focus-add-box h3{{margin:0 0 1rem;font-size:1rem;color:var(--tx)}}
+.focus-add-box input{{width:100%;box-sizing:border-box;padding:.6rem .8rem;border-radius:6px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:.88rem;margin-bottom:.5rem}}
+.focus-add-box input:focus{{outline:none;border-color:var(--ac)}}
+.focus-add-hint{{font-size:.72rem;color:var(--mu);margin-bottom:1rem}}
+.focus-add-actions{{display:flex;gap:.6rem;justify-content:flex-end}}
+.focus-add-actions button{{padding:.45rem 1rem;border-radius:6px;border:1px solid var(--bd);cursor:pointer;font-size:.82rem}}
+.focus-add-ok{{background:var(--ac);border-color:var(--ac)!important;color:#000;font-weight:600}}
 .focus-ts{{font-size:.72rem;color:var(--mu)}}
 .focus-summary{{background:rgba(248,81,73,.06);border:1px solid rgba(248,81,73,.2);border-radius:8px;padding:.8rem 1rem;margin-bottom:1rem}}
 .focus-summary-title{{font-size:.88rem;font-weight:700;color:var(--rd)}}
 .focus-summary-note{{font-size:.72rem;color:var(--mu);margin-top:.2rem}}
 .focus-cards{{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem}}
+/* ── 速览日报内嵌 ── */
+.ov-daily-inline{{max-height:260px;overflow-y:auto;scrollbar-width:thin;font-size:.82rem;line-height:1.7;color:var(--tx);padding-right:.3rem}}
+.ov-daily-inline::-webkit-scrollbar{{width:4px}}
+.ov-daily-inline::-webkit-scrollbar-thumb{{background:var(--bd2);border-radius:2px}}
+.ov-daily-inline .di-loading{{color:var(--mu);font-size:.78rem}}
+.ov-daily-inline h2,.ov-daily-inline h3{{font-size:.85rem;font-weight:700;color:var(--ac);margin:.8rem 0 .3rem}}
+.ov-daily-inline p{{margin:.3rem 0}}
+.ov-daily-inline hr{{border:none;border-top:1px solid var(--bd2);margin:.6rem 0}}
 /* ── AI 日报内容 ── */
 .dr-meta{{font-size:.72rem;color:var(--mu);margin-bottom:1rem;padding:.4rem .8rem;background:rgba(188,140,255,.08);border-radius:6px;border-left:3px solid var(--pu)}}
 .dr-content{{line-height:1.8;color:var(--tx)}}
@@ -474,12 +498,9 @@ def _overview(intl, dom, trend, date, total):
     </div>
   </div>
   <div class="overview-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.5rem">
-    <div class="ov-block ov-daily-card" onclick="openDailyReport()" style="cursor:pointer;border-color:rgba(188,140,255,.3);background:rgba(188,140,255,.05)">
-      <div class="ov-block-title" style="color:var(--pu)">&#128203; 今日日报 <span style="margin-left:auto;font-size:.72rem;color:var(--pu)">点击查看 &rsaquo;</span></div>
-      <div style="font-size:.8rem;color:var(--mu);line-height:1.6">
-        汇总今日国际、国内、热点资讯<br>
-        <span style="color:var(--pu);font-weight:600">{date} · {total} 条</span>
-      </div>
+    <div class="ov-block ov-daily-card" style="border-color:rgba(188,140,255,.3);background:rgba(188,140,255,.05)">
+      <div class="ov-block-title" style="color:var(--pu)">&#128203; 今日日报 <span class="section-more" onclick="openDailyReport()" style="color:var(--pu)">展开全文 &rsaquo;</span></div>
+      <div class="ov-daily-inline" id="ov-daily-inline"><div class="di-loading">加载中...</div></div>
     </div>
     <div class="ov-block" style="border-color:rgba(88,166,255,.2)">
       <div class="ov-block-title">&#129302; AI 资讯速览 <span class="section-more" onclick="switchTabByName('ai')">查看全部 &rsaquo;</span></div>
@@ -611,6 +632,9 @@ def _panel_focus():
       <span class="focus-topic" data-q="人工智能 AI 大模型 GPT DeepSeek 机器学习" onclick="switchFocusTopic(this)">&#129302; AI前沿</span>
       <span class="focus-topic" data-q="台海 台湾 两岸 解放军" onclick="switchFocusTopic(this)">&#127988; 台海动态</span>
     </div>
+    <div id="focus-custom-topics" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem"></div>
+    <button class="focus-add-btn" onclick="openFocusAddModal()">&#43; 自定义话题</button>
+    </div>
     <span class="focus-ts" id="focus-ts"></span>
   </div>
   <div id="focus-content">
@@ -698,6 +722,20 @@ def _modal():
       <button class="daily-close" onclick="closeDailyModal()">&#10005;</button>
     </div>
     <div id="daily-body"><div class="empty">加载中...</div></div>
+  </div>
+</div>
+
+<!-- 自定义话题弹窗 -->
+<div class="focus-add-modal" id="focus-add-modal">
+  <div class="focus-add-box">
+    <h3>&#10133; 添加自定义话题</h3>
+    <input type="text" id="focus-add-label" placeholder="话题名称，如：小米" maxlength="12">
+    <input type="text" id="focus-add-keywords" placeholder="关键词（空格分隔），如：小米 雷军 小米汽车" maxlength="80">
+    <div class="focus-add-hint">关键词用于从今日热点/新闻中筛选相关内容，支持多个关键词</div>
+    <div class="focus-add-actions">
+      <button onclick="closeFocusAddModal()">取消</button>
+      <button class="focus-add-ok" onclick="confirmAddFocusTopic()">添加</button>
+    </div>
   </div>
 </div>"""
 
@@ -899,11 +937,61 @@ async function loadOvAIPreview() {{
 }}
 
 // ── 动态专栏 ──
+// ── 自定义话题 ──
+function loadCustomTopics() {{
+  const saved = JSON.parse(localStorage.getItem('customFocusTopics') || '[]');
+  const container = document.getElementById('focus-custom-topics');
+  container.innerHTML = '';
+  saved.forEach((t, i) => {{
+    const span = document.createElement('span');
+    span.className = 'focus-topic focus-topic-custom';
+    span.dataset.q = t.q;
+    span.onclick = function() {{ switchFocusTopic(this); }};
+    span.innerHTML = t.label + `<span class="focus-topic-del" onclick="deleteCustomTopic(event,${{i}})">✕</span>`;
+    container.appendChild(span);
+  }});
+}}
+function openFocusAddModal() {{
+  document.getElementById('focus-add-label').value = '';
+  document.getElementById('focus-add-keywords').value = '';
+  document.getElementById('focus-add-modal').classList.add('open');
+  setTimeout(() => document.getElementById('focus-add-label').focus(), 100);
+}}
+function closeFocusAddModal() {{
+  document.getElementById('focus-add-modal').classList.remove('open');
+}}
+function confirmAddFocusTopic() {{
+  const label = document.getElementById('focus-add-label').value.trim();
+  const q = document.getElementById('focus-add-keywords').value.trim();
+  if (!label || !q) {{ alert('请填写话题名称和关键词'); return; }}
+  const saved = JSON.parse(localStorage.getItem('customFocusTopics') || '[]');
+  saved.push({{ label, q }});
+  localStorage.setItem('customFocusTopics', JSON.stringify(saved));
+  loadCustomTopics();
+  closeFocusAddModal();
+  // 自动切换到新话题
+  const spans = document.querySelectorAll('#focus-custom-topics .focus-topic');
+  if (spans.length) switchFocusTopic(spans[spans.length - 1]);
+}}
+function deleteCustomTopic(e, idx) {{
+  e.stopPropagation();
+  const saved = JSON.parse(localStorage.getItem('customFocusTopics') || '[]');
+  saved.splice(idx, 1);
+  localStorage.setItem('customFocusTopics', JSON.stringify(saved));
+  loadCustomTopics();
+  // 切回第一个默认话题
+  const first = document.querySelector('.focus-topic:not(.focus-topic-custom)');
+  if (first) switchFocusTopic(first);
+}}
+document.getElementById('focus-add-modal').addEventListener('click', e => {{
+  if (e.target === e.currentTarget) closeFocusAddModal();
+}});
+
 let focusInited = false;
 function initFocus() {{
   if (focusInited) return;
   focusInited = true;
-  // 自动加载第一个主题
+  loadCustomTopics();
   const first = document.querySelector('.focus-topic.active');
   if (first) loadFocusTopic(first.dataset.q, first.textContent.trim());
 }}
@@ -1064,6 +1152,7 @@ document.getElementById('modal').addEventListener('click', e => {{ if (e.target 
 // 首页默认加载速览行情，记录自动更新时间
 loadOverviewMarket().then(() => setLastUpdated('auto')).catch(() => setLastUpdated('auto'));
 loadOvAIPreview();
+loadOvDailyInline();
 
 // ── 天气 ──
 const WEATHER_CITIES = [
@@ -1451,6 +1540,29 @@ document.getElementById('chart-modal').addEventListener('click', e => {{
 }});
 
 // ── 今日日报 ──
+// 速览页内嵌加载
+function loadOvDailyInline() {{
+  const el = document.getElementById('ov-daily-inline');
+  if (!el) return;
+  fetch('data/daily_report.json?t=' + Date.now())
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {{
+      if (!d || !d.report) {{
+        el.innerHTML = '<div class="di-loading">暂无日报，将在每日08:00自动生成</div>';
+        return;
+      }}
+      let html = d.report
+        .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^---$/gm, '<hr>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\\n\\n/g, '</p><p>')
+        .replace(/\\n/g, '<br>');
+      el.innerHTML = `<p>${{html}}</p>`;
+    }})
+    .catch(() => {{ el.innerHTML = '<div class="di-loading">加载失败</div>'; }});
+}}
+
 function openDailyReport() {{
   document.getElementById('daily-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
