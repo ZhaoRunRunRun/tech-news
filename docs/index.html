@@ -262,18 +262,22 @@ document.getElementById('hd-total').textContent = '📰 34 条资讯';
 
 const HISTORY = [{"date": "2026-02-28", "total": 35, "file": "news_2026-02-28.json"}];
 
+const FINNHUB_KEY = 'd6hdma9r01qnjnco9un0d6hdma9r01qnjnco9ung';
 const MARKET = {
   us: [
-    {s:"AAPL",n:"苹果"},{s:"MSFT",n:"微软"},{s:"GOOGL",n:"谷歌"},{s:"AMZN",n:"亚马逊"},
-    {s:"META",n:"Meta"},{s:"NVDA",n:"英伟达"},{s:"TSLA",n:"特斯拉"},{s:"NFLX",n:"Netflix"},
+    {s:"AAPL",n:"苹果",cur:"USD"},{s:"MSFT",n:"微软",cur:"USD"},
+    {s:"GOOGL",n:"谷歌",cur:"USD"},{s:"AMZN",n:"亚马逊",cur:"USD"},
+    {s:"META",n:"Meta",cur:"USD"},{s:"NVDA",n:"英伟达",cur:"USD"},
+    {s:"TSLA",n:"特斯拉",cur:"USD"},{s:"NFLX",n:"Netflix",cur:"USD"},
   ],
   cn: [
-    {s:"BABA",n:"阿里巴巴"},{s:"0700.HK",n:"腾讯"},{s:"JD",n:"京东"},
-    {s:"BIDU",n:"百度"},{s:"PDD",n:"拼多多"},{s:"BILI",n:"哔哩哔哩"},
+    {s:"BABA",n:"阿里巴巴",cur:"USD"},{s:"HK:700",n:"腾讯",cur:"HKD"},
+    {s:"JD",n:"京东",cur:"USD"},{s:"BIDU",n:"百度",cur:"USD"},
+    {s:"PDD",n:"拼多多",cur:"USD"},{s:"BILI",n:"哔哩哔哩",cur:"USD"},
   ],
   metal: [
-    {s:"GC=F",n:"黄金",unit:"oz"},
-    {s:"SI=F",n:"白银",unit:"oz"},
+    {s:"OANDA:XAU_USD",n:"黄金",unit:"oz",cur:"USD"},
+    {s:"OANDA:XAG_USD",n:"白银",unit:"oz",cur:"USD"},
   ],
 };
 
@@ -299,40 +303,31 @@ let marketLoaded = false;
 let ovMarketLoaded = false;
 
 async function fetchQuote(symbol) {
-  const yUrl = 'https://query1.finance.yahoo.com/v8/finance/chart/' + encodeURIComponent(symbol) + '?interval=1d&range=2d';
-  const urls = [
-    'https://corsproxy.io/?url=' + encodeURIComponent(yUrl),
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent(yUrl),
-    yUrl,
-  ];
-  for (const url of urls) {
-    try {
-      const ctrl = new AbortController();
-      const tid  = setTimeout(() => ctrl.abort(), 8000);
-      const r    = await fetch(url, {signal: ctrl.signal});
-      clearTimeout(tid);
-      if (!r.ok) continue;
-      const d    = await r.json();
-      const meta = d.chart.result[0].meta;
-      const price = meta.regularMarketPrice || 0;
-      const prev  = meta.chartPreviousClose || meta.previousClose || price;
-      const chg   = price - prev;
-      const pct   = prev ? chg / prev * 100 : 0;
-      return { price, chg, pct, currency: meta.currency || 'USD' };
-    } catch(e) { continue; }
+  try {
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 8000);
+    const url  = 'https://finnhub.io/api/v1/quote?symbol=' + encodeURIComponent(symbol) + '&token=' + FINNHUB_KEY;
+    const r    = await fetch(url, {signal: ctrl.signal});
+    clearTimeout(tid);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    if (!d.c || d.c === 0) throw new Error('no data');
+    return { price: d.c, chg: d.d, pct: d.dp, currency: '' };
+  } catch(e) {
+    throw e;
   }
-  throw new Error('failed');
 }
 
-function mCard(name, sym, extra, q) {
+function mCard(name, sym, extra, q, cur) {
   if (!q || !q.price) return `<div class="mcard flat"><div class="mc-name">${name}</div><div class="mc-sym">${sym}</div><div class="mc-na">暂无数据</div></div>`;
   const cls   = q.chg > 0 ? 'up' : q.chg < 0 ? 'down' : 'flat';
   const arrow = q.chg >= 0 ? '▲' : '▼';
   const sign  = q.chg >= 0 ? '+' : '';
+  const label = cur ? cur + ' ' : '';
   return `<div class="mcard ${cls}">
     <div class="mc-name">${name}</div>
     <div class="mc-sym">${sym}${extra}</div>
-    <div class="mc-price">${q.currency} ${q.price.toFixed(2)}</div>
+    <div class="mc-price">${label}${q.price.toFixed(2)}</div>
     <div class="mc-chg ${cls}">${arrow} ${sign}${q.chg.toFixed(2)} (${sign}${q.pct.toFixed(2)}%)</div>
   </div>`;
 }
@@ -343,9 +338,9 @@ async function loadMarket(force) {
   const results = await Promise.allSettled(all.map(x => fetchQuote(x.s)));
   const map = {};
   all.forEach((x, i) => { map[x.s] = results[i].status === 'fulfilled' ? results[i].value : null; });
-  document.getElementById('mg-us').innerHTML    = MARKET.us.map(x    => mCard(x.n, x.s, '', map[x.s])).join('');
-  document.getElementById('mg-cn').innerHTML    = MARKET.cn.map(x    => mCard(x.n, x.s, '', map[x.s])).join('');
-  document.getElementById('mg-metal').innerHTML = MARKET.metal.map(x => mCard('🥇 '+x.n, x.s, ' / '+x.unit, map[x.s])).join('');
+  document.getElementById('mg-us').innerHTML    = MARKET.us.map(x    => mCard(x.n, x.s, '', map[x.s], x.cur)).join('');
+  document.getElementById('mg-cn').innerHTML    = MARKET.cn.map(x    => mCard(x.n, x.s, '', map[x.s], x.cur)).join('');
+  document.getElementById('mg-metal').innerHTML = MARKET.metal.map(x => mCard('🥇 '+x.n, x.s, ' / '+x.unit, map[x.s], x.cur)).join('');
   const now = new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'});
   document.getElementById('market-ts').innerHTML = `<span>行情更新于 ${now}（延迟约15分钟）</span><a href="#" onclick="loadMarket(true);return false">↻ 刷新</a>`;
   marketLoaded = true;
@@ -361,7 +356,7 @@ async function loadOverviewMarket() {
   const results = await Promise.allSettled(picks.map(x => fetchQuote(x.s)));
   const map = {};
   picks.forEach((x, i) => { map[x.s] = results[i].status === 'fulfilled' ? results[i].value : null; });
-  document.getElementById('ov-market-grid').innerHTML = picks.map(x => mCard(x.n, x.s, '', map[x.s])).join('');
+  document.getElementById('ov-market-grid').innerHTML = picks.map(x => mCard(x.n, x.s, '', map[x.s], x.cur)).join('');
   ovMarketLoaded = true;
 }
 
