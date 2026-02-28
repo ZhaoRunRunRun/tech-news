@@ -17,18 +17,31 @@ API_KEY = "e9cb5ea9f935484285feb0ef4597db1d"
 MAX_DAYS = 1300  # 约5年
 
 STOCKS = [
-    {"symbol": "AAPL",  "name": "苹果",    "currency": "USD"},
-    {"symbol": "MSFT",  "name": "微软",    "currency": "USD"},
-    {"symbol": "GOOGL", "name": "谷歌",    "currency": "USD"},
-    {"symbol": "AMZN",  "name": "亚马逊",  "currency": "USD"},
-    {"symbol": "META",  "name": "Meta",    "currency": "USD"},
-    {"symbol": "NVDA",  "name": "英伟达",  "currency": "USD"},
-    {"symbol": "TSLA",  "name": "特斯拉",  "currency": "USD"},
-    {"symbol": "NFLX",  "name": "Netflix", "currency": "USD"},
-    {"symbol": "BABA",  "name": "阿里巴巴","currency": "USD"},
-    {"symbol": "JD",    "name": "京东",    "currency": "USD"},
-    {"symbol": "BIDU",  "name": "百度",    "currency": "USD"},
-    {"symbol": "PDD",   "name": "拼多多",  "currency": "USD"},
+    # 美股科技
+    {"symbol": "AAPL",   "name": "苹果",      "currency": "USD"},
+    {"symbol": "MSFT",   "name": "微软",      "currency": "USD"},
+    {"symbol": "GOOGL",  "name": "谷歌",      "currency": "USD"},
+    {"symbol": "AMZN",   "name": "亚马逊",    "currency": "USD"},
+    {"symbol": "META",   "name": "Meta",      "currency": "USD"},
+    {"symbol": "NVDA",   "name": "英伟达",    "currency": "USD"},
+    {"symbol": "TSLA",   "name": "特斯拉",    "currency": "USD"},
+    {"symbol": "NFLX",   "name": "Netflix",   "currency": "USD"},
+    # 中概/港股
+    {"symbol": "BABA",   "name": "阿里巴巴",  "currency": "USD"},
+    {"symbol": "0700.HK","name": "腾讯",      "currency": "HKD"},
+    {"symbol": "JD",     "name": "京东",      "currency": "USD"},
+    {"symbol": "BIDU",   "name": "百度",      "currency": "USD"},
+    {"symbol": "PDD",    "name": "拼多多",    "currency": "USD"},
+    {"symbol": "BILI",   "name": "哔哩哔哩",  "currency": "USD"},
+    # 贵金属（期货）
+    {"symbol": "GC=F",   "name": "黄金",      "currency": "USD"},
+    {"symbol": "SI=F",   "name": "白银",      "currency": "USD"},
+    # 有色金属龙头
+    {"symbol": "FCX",    "name": "自由港铜业","currency": "USD"},
+    {"symbol": "AA",     "name": "美国铝业",  "currency": "USD"},
+    {"symbol": "NEM",    "name": "纽蒙特",    "currency": "USD"},
+    {"symbol": "VALE",   "name": "淡水河谷",  "currency": "USD"},
+    {"symbol": "RIO",    "name": "力拓集团",  "currency": "USD"},
 ]
 
 def fetch_history(symbol, range_="5y"):

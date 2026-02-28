@@ -1148,8 +1148,17 @@ function filterPoints(points, range) {{
   return points.filter(p => p.d >= cutStr);
 }}
 
+// Finnhub symbol → Yahoo Finance symbol 映射（用于历史图表查询）
+const HIST_SYM_MAP = {{
+  'HK:700':        '0700.HK',
+  'OANDA:XAU_USD': 'GC=F',
+  'OANDA:XAG_USD': 'SI=F',
+}};
+function histSym(s) {{ return HIST_SYM_MAP[s] || s; }}
+
 async function openStockChart(symbol, name) {{
-  currentSymbol = symbol;
+  const hsym = histSym(symbol);
+  currentSymbol = hsym;
   document.getElementById('chart-title').textContent = name + ' (' + symbol + ')';
   document.getElementById('chart-price').textContent = '--';
   document.getElementById('chart-chg').textContent = '';
@@ -1159,11 +1168,11 @@ async function openStockChart(symbol, name) {{
   document.getElementById('chart-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
   const data = await loadHistoryData();
-  if (!data || !data.stocks || !data.stocks[symbol]) {{
+  if (!data || !data.stocks || !data.stocks[hsym]) {{
     document.getElementById('chart-loading').textContent = '暂无历史数据，等待每日更新...';
     return;
   }}
-  renderChart(symbol, currentRange);
+  renderChart(hsym, currentRange);
 }}
 
 function renderChart(symbol, range) {{
