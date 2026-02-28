@@ -1,29 +1,29 @@
-name: 每日科技新闻更新
+name: 股价更新（每2小时）
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 北京时间 08:00
+    - cron: '0 */2 * * *'  # 每2小时
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  update-news:
+  update-stocks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: 抓取新闻
-        run: python scripts/fetch_news.py
-      - name: 生成页面
+      - name: 抓取股价
+        run: python scripts/fetch_stocks.py
+      - name: 重新生成页面
         run: python scripts/generate_html.py
       - name: 提交推送
         run: |
           git config user.name "TechNewsBot"
           git config user.email "bot@tech-news"
           git add docs/
-          git diff --staged --quiet || git commit -m "📰 每日新闻更新 $(date +'%Y-%m-%d')"
+          git diff --staged --quiet || git commit -m "📈 股价更新 $(date +'%Y-%m-%d %H:%M')"
           git push

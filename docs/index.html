@@ -5,48 +5,49 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>科技日报 · 2026-02-28</title>
 <style>
-:root{--bg:#0d1117;--surface:#161b22;--border:#30363d;--accent:#58a6ff;--green:#3fb950;--red:#f85149;--purple:#bc8cff;--text:#c9d1d9;--muted:#8b949e;--hover:#1f2937}
+:root{--bg:#0d1117;--sf:#161b22;--bd:#30363d;--ac:#58a6ff;--gn:#3fb950;--rd:#f85149;--pu:#bc8cff;--tx:#c9d1d9;--mu:#8b949e;--hv:#1f2937}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-header{background:linear-gradient(180deg,#161b22,#0d1117);border-bottom:1px solid var(--border);padding:2rem 1.5rem 1rem;text-align:center}
-header h1{font-size:1.9rem;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.meta{color:var(--muted);font-size:.82rem;margin-top:.4rem}
-.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10;overflow-x:auto}
-.tab{padding:.75rem 1.3rem;font-size:.88rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);white-space:nowrap;transition:color .2s,border-color .2s;user-select:none}
-.tab:hover{color:var(--text)}.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+header{background:linear-gradient(180deg,#161b22,#0d1117);border-bottom:1px solid var(--bd);padding:2rem 1.5rem 1rem;text-align:center}
+header h1{font-size:1.9rem;font-weight:800;background:linear-gradient(90deg,var(--ac),var(--pu));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.meta{color:var(--mu);font-size:.82rem;margin-top:.4rem}
+.tabs{display:flex;border-bottom:1px solid var(--bd);background:var(--sf);position:sticky;top:0;z-index:10;overflow-x:auto}
+.tab{padding:.75rem 1.3rem;font-size:.88rem;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--mu);white-space:nowrap;transition:color .2s,border-color .2s;user-select:none}
+.tab:hover{color:var(--tx)}.tab.active{color:var(--ac);border-bottom-color:var(--ac)}
 .panel{display:none;padding:1.5rem;max-width:1280px;margin:0 auto}.panel.active{display:block}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.35rem;transition:background .15s,border-color .15s,transform .15s}
-.card:hover{background:var(--hover);border-color:var(--accent);transform:translateY(-2px)}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.1rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:.35rem;transition:background .15s,border-color .15s,transform .15s}
+.card:hover{background:var(--hv);border-color:var(--ac);transform:translateY(-2px)}
 .card-top{display:flex;justify-content:space-between;align-items:center}
-.tag{font-size:.7rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;background:rgba(88,166,255,.12);color:var(--accent)}
-.score{font-size:.72rem;color:var(--green);font-weight:600}
+.tag{font-size:.7rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;background:rgba(88,166,255,.12);color:var(--ac)}
+.score{font-size:.72rem;color:var(--gn);font-weight:600}
 .card-title{font-size:.92rem;font-weight:600;line-height:1.5}
-.desc{font-size:.8rem;color:var(--muted);line-height:1.5}
-.card-time{font-size:.72rem;color:var(--muted);margin-top:auto;padding-top:.25rem}
-.empty{color:var(--muted);padding:2rem;text-align:center}
+.desc{font-size:.8rem;color:var(--mu);line-height:1.5}
+.card-time{font-size:.72rem;color:var(--mu);margin-top:auto;padding-top:.25rem}
+.empty{color:var(--mu);padding:2rem;text-align:center}
+.sup{font-size:.78rem;color:var(--mu);margin-bottom:1rem}
 .sg-title{font-size:1rem;font-weight:700;margin:1.2rem 0 .8rem}
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:.8rem;margin-bottom:.5rem}
-.sc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.2rem;transition:transform .15s}
-.sc:hover{transform:translateY(-2px)}
-.sc.up{border-left:3px solid var(--green)}.sc.down{border-left:3px solid var(--red)}.sc.flat{border-left:3px solid var(--muted)}
-.sn{font-size:.92rem;font-weight:700}.ss{font-size:.7rem;color:var(--muted)}
+.sc{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.2rem}
+.sc.up{border-left:3px solid var(--gn)}.sc.down{border-left:3px solid var(--rd)}.sc.flat{border-left:3px solid var(--mu)}
+.sn{font-size:.92rem;font-weight:700}.ss{font-size:.7rem;color:var(--mu)}
 .sp{font-size:1.05rem;font-weight:800;margin-top:.2rem}
-.sd.up{color:var(--green);font-size:.82rem;font-weight:600}.sd.down{color:var(--red);font-size:.82rem;font-weight:600}.sd.flat{color:var(--muted);font-size:.82rem}
-.sload{color:var(--muted);font-size:.85rem;padding:.5rem 0}
+.sd.up{color:var(--gn);font-size:.82rem;font-weight:600}.sd.down{color:var(--rd);font-size:.82rem;font-weight:600}.sd.flat{color:var(--mu);font-size:.82rem}
+.st{font-size:.68rem;color:var(--mu);margin-top:.15rem}
+.sload{color:var(--mu);font-size:.82rem;padding:.3rem 0}
 .hg{display:flex;flex-direction:column;gap:.6rem;max-width:640px}
-.hi{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;cursor:pointer;transition:background .15s,border-color .15s}
-.hi:hover{background:var(--hover);border-color:var(--accent)}
-.hd{font-weight:600;font-size:.9rem}.hc{font-size:.8rem;color:var(--muted)}
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;overflow-y:auto;padding:2rem 1rem}
+.hi{display:flex;justify-content:space-between;align-items:center;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:.75rem 1rem;cursor:pointer;transition:background .15s,border-color .15s}
+.hi:hover{background:var(--hv);border-color:var(--ac)}
+.hd{font-weight:600;font-size:.9rem}.hc{font-size:.8rem;color:var(--mu)}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:100;overflow-y:auto;padding:2rem 1rem}
 .ov.open{display:block}
-.mo{background:var(--surface);border:1px solid var(--border);border-radius:12px;max-width:1100px;margin:0 auto;padding:1.5rem}
+.mo{background:var(--sf);border:1px solid var(--bd);border-radius:12px;max-width:1100px;margin:0 auto;padding:1.5rem}
 .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
 .mh h2{font-size:1.1rem;font-weight:700}
-.mc{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:.2rem .5rem;border-radius:4px}
-.mc:hover{color:var(--text);background:var(--hover)}
-footer{text-align:center;padding:2rem;color:var(--muted);font-size:.78rem;border-top:1px solid var(--border);margin-top:2rem}
-@media(max-width:600px){.cards,.sg{grid-template-columns:1fr};header h1{font-size:1.4rem}}
+.mc{background:none;border:none;color:var(--mu);font-size:1.4rem;cursor:pointer;padding:.2rem .5rem;border-radius:4px}
+.mc:hover{color:var(--tx);background:var(--hv)}
+footer{text-align:center;padding:2rem;color:var(--mu);font-size:.78rem;border-top:1px solid var(--bd);margin-top:2rem}
+@media(max-width:600px){.cards,.sg{grid-template-columns:1fr}header h1{font-size:1.4rem}}
 </style>
 </head>
 <body>
@@ -64,46 +65,42 @@ footer{text-align:center;padding:2rem;color:var(--muted);font-size:.78rem;border
 <div id="intl"  class="panel active"><div class="cards"><a class="card" href="https://notdivided.org" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 1619</span></div><div class="card-title">We Will Not Be Divided</div><div class="card-time">08:54</div></a><a class="card" href="https://www.anthropic.com/news/statement-comments-secretary-war" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 917</span></div><div class="card-title">Statement on the comments from Secretary of War Pete Hegseth</div><div class="card-time">09:20</div></a><a class="card" href="https://help.openai.com/en/articles/7232927-how-do-i-cancel-my-chatgpt-subscription" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 826</span></div><div class="card-title">How do I cancel my ChatGPT subscription?</div><div class="card-time">13:55</div></a><a class="card" href="https://twitter.com/sama/status/2027578652477821175" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 642</span></div><div class="card-title">OpenAI agrees with Dept. of War to deploy models in their classified network</div><div class="card-time">10:59</div></a><a class="card" href="https://www.pcgamer.com/software/operating-systems/a-new-california-law-says-all-operating-systems-including-linux-need-to-have-some-form-of-age-verification-at-account-setup/" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 577</span></div><div class="card-title">A new California law says all operating systems need to have age verification</div><div class="card-time">22:55</div></a><a class="card" href="https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 485</span></div><div class="card-title">OpenAI raises $110B on $730B pre-money valuation</div><div class="card-time">22:56</div></a><a class="card" href="https://blog.cloudflare.com/a-better-web-streams-api/" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 406</span></div><div class="card-title">A better streams API is possible for JavaScript</div><div class="card-time">22:02</div></a><a class="card" href="https://www.cbsnews.com/news/nasa-artemis-moon-program-overhaul/" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 255</span></div><div class="card-title">NASA announces overhaul of Artemis program amid safety concerns, delays</div><div class="card-time">00:33</div></a><a class="card" href="https://glashrvatske.hrt.hr/en/domestic/croatia-declared-free-of-landmines-after-31-years-12593533" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 252</span></div><div class="card-title">Croatia declared free of landmines after 31 years</div><div class="card-time">10:48</div></a><a class="card" href="https://www.cnn.com/2026/02/25/politics/chatgpt-china-intimidation-operation" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 205</span></div><div class="card-title">A Chinese official’s use of ChatGPT revealed an intimidation operation</div><div class="card-time">23:52</div></a><a class="card" href="https://github.com/anadim/AdderBoard" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 151</span></div><div class="card-title">Smallest transformer that can add two 10-digit numbers</div><div class="card-time">02:29</div></a><a class="card" href="https://blog.timcappalli.me/p/passkeys-prf-warning/" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 149</span></div><div class="card-title">Don't use passkeys for encrypting user data</div><div class="card-time">11:11</div></a><a class="card" href="https://github.com/maloyan/manim-web" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 103</span></div><div class="card-title">Show HN: I ported Manim to TypeScript (run 3b1B math animations in the browser)</div><div class="card-time">02:15</div></a><a class="card" href="https://lewiscampbell.tech/blog/260204.html" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 85</span></div><div class="card-title">Rust Is Just a Tool</div><div class="card-time">13:47</div></a><a class="card" href="https://www.science.org/doi/10.1126/science.adt2760" target="_blank" rel="noopener"><div class="card-top"><span class="tag">Hacker News</span><span class="score">&#9650; 83</span></div><div class="card-title">Qt45: A small polymerase ribozyme that can synthesize itself</div><div class="card-time">07:42</div></a></div></div>
 <div id="dom"   class="panel"><div class="cards"><a class="card" href="https://juejin.cn/post/7576559408659611700" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 18</span></div><div class="card-title">还在用 WebSocket 做实时通信？SSE 可能更简单</div><p class="desc">除了WebSocket，你还知道SSE吗？同为实时通信技术，SSE实现简单且支持自动重连，在特定场景下是更优解。本文将对比两者的核心差异，助你做出最佳技术选型。</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7581807793134108718" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 20</span></div><div class="card-title">数据标注平台重磅上线 | 标注赚现金 低门槛真收益</div><p class="desc">一个多领域的数据采集与标注服务平台，为你而来！低门槛、真收益！利用碎片时间，将你的代码洞察力直接变现。这不仅仅是一个任务平台，更是一个专为资深开发者打造的、用技</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7599924721006182463" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 20</span></div><div class="card-title">别用 JS 惯坏了鸿蒙</div><p class="desc">HarmonyOS NEXT推出也快2年了，本质上是强制前端开发者从“UI 涂料工”向“跨端架构师”转型。虽然适配的过程充满了各种“技术坑”，但这正是我们消除技</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7581413562486587398" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 3</span></div><div class="card-title">使用Electron+Vue3开发Qwen3 2B桌面应用：从想法到实现的完整指南</div><p class="desc">一、引言 随着大语言模型的快速发展，本地部署和使用LLM已经成为开发者和企业的重要需求。Qwen3 2B作为一款轻量级的大语言模型，具有良好的性能和兼容性，非常</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7592683699771473930" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 31</span></div><div class="card-title">Flutter 邪修秘籍：那些官方文档不会告诉你的骚操作</div><p class="desc">前言：为什么需要"邪修"？ Flutter 官方文档写得很好，教你如何写出优雅、规范、可维护的代码。 但现实是： 产品经理的需求永远超出框架的设计 设计师的脑洞</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7590712589297106950" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 4</span></div><div class="card-title">微信朋友圈图片布局</div><p class="desc">参考微信朋友圈图片展示形式。实现一张图片时，按图片原有宽高显示。 两张图片，并行展示，图片会偏大一些。 四张图片时，一行显示两个。 三张、及四张以上时，一行显示</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7578138892126797870" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 24</span></div><div class="card-title">我只改了个头像，为什么整个后台系统都闪了一下？</div><p class="desc">前言：一个悲伤的故事 那是上个周五的下午，阳光明媚，空气中弥漫着“即将放假”的快乐气息。 产品经理（PM）跑过来跟前端说：“哎，咱们那个后台管理系统，右上角的头</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7594262760939749410" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 4</span></div><div class="card-title">用了都说好的 uniapp 路由框架</div><p class="desc">背景 在使用 uni-app 开发项目时，路由跳转是极为频繁的操作，uni-app 提供的路由跳转 api uni.navigateTo够用但是却不够好用，主要</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7574382925760725030" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 4</span></div><div class="card-title">不限于Vue！vue-plugin-hiprint 打印插件完整使用指南</div><p class="desc">本教程整理了自己的使用过程经验和接触到的教程文档，旨在为初次接触到vue-plugin-hiprint开发的人，提供初步的了解和自定义开发的方向</p><div class="card-time">2026-02-28</div></a><a class="card" href="https://juejin.cn/post/7611354028865765391" target="_blank" rel="noopener"><div class="card-top"><span class="tag">掘金</span><span class="score">&#9650; 1</span></div><div class="card-title">前端面试复习指南【代码演示多多版】之——HTML</div><p class="desc">本文章介绍了2026年HTML主要面试内容，包括&lt;dialog&gt;、&lt;picture&gt;、&lt;template&gt;等标签的使用。文章详细讲解了这些新特性如何改善网页的响</p><div class="card-time">2026-02-28</div></a></div></div>
 <div id="trend" class="panel"><div class="cards"><div class="empty">暂无数据</div></div></div>
-<div id="stock" class="panel">
-  <h3 class="sg-title">&#127482;&#127480; 美股</h3>
-  <div class="sg" id="grid-us"><div class="sload">加载中...</div></div>
-  <h3 class="sg-title">&#127464;&#127475; 中概 / 港股</h3>
-  <div class="sg" id="grid-cn"><div class="sload">加载中...</div></div>
-  <p style="color:var(--muted);font-size:.75rem;margin-top:1rem">
-    数据来源：Yahoo Finance &nbsp;&middot;&nbsp; 延迟约15分钟 &nbsp;&middot;&nbsp;
-    <a href="#" onclick="loadStocks(true);return false" style="color:var(--accent)">刷新</a>
-  </p>
-</div>
-<div id="hist" class="panel"><div class="hg" id="hist-list"></div></div>
+<div id="stock" class="panel"><p class="sup">数据更新于 2026-02-28 18:14:52 CST &nbsp;·&nbsp; 每2小时自动刷新</p><h3 class="sg-title">&#127482;&#127480; 美股</h3><div class="sg"><div class="sc flat"><div class="sn">苹果</div><div class="ss">AAPL</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">微软</div><div class="ss">MSFT</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">谷歌</div><div class="ss">GOOGL</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">亚马逊</div><div class="ss">AMZN</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">Meta</div><div class="ss">META</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">英伟达</div><div class="ss">NVDA</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">特斯拉</div><div class="ss">TSLA</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">Netflix</div><div class="ss">NFLX</div><div class="sload">暂无数据</div></div></div><h3 class="sg-title">&#127464;&#127475; 中概 / 港股</h3><div class="sg"><div class="sc flat"><div class="sn">阿里巴巴</div><div class="ss">9988.HK</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">腾讯</div><div class="ss">0700.HK</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">京东</div><div class="ss">9618.HK</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">百度</div><div class="ss">BIDU</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">拼多多</div><div class="ss">PDD</div><div class="sload">暂无数据</div></div><div class="sc flat"><div class="sn">阿里(美)</div><div class="ss">BABA</div><div class="sload">暂无数据</div></div></div></div>
+<div id="hist"  class="panel"><div class="hg" id="hist-list"></div></div>
 <div class="ov" id="modal">
   <div class="mo">
-    <div class="mh"><h2 id="modal-title">历史日报</h2><button class="mc" onclick="closeModal()">&#10005;</button></div>
+    <div class="mh">
+      <h2 id="modal-title">历史日报</h2>
+      <button class="mc" onclick="closeModal()">&#10005;</button>
+    </div>
     <div id="modal-body"></div>
   </div>
 </div>
-<footer>数据来源：Hacker News &middot; GitHub Trending &middot; V2EX &middot; 掘金 &middot; 微博热搜 &middot; 知乎热榜 &middot; Yahoo Finance &nbsp;|&nbsp; 每日 08:00 自动更新</footer>
+<footer>数据来源：Hacker News &middot; GitHub Trending &middot; V2EX &middot; 掘金 &middot; 微博 &middot; 知乎 &middot; Yahoo Finance &nbsp;|&nbsp; 新闻每日08:00 &middot; 股价每2小时更新</footer>
 <script>
 const HISTORY = [{"date": "2026-02-28", "total": 35, "file": "news_2026-02-28.json"}];
-const STOCKS  = [{"symbol": "AAPL", "name": "苹果", "region": "us"}, {"symbol": "MSFT", "name": "微软", "region": "us"}, {"symbol": "GOOGL", "name": "谷歌", "region": "us"}, {"symbol": "AMZN", "name": "亚马逊", "region": "us"}, {"symbol": "META", "name": "Meta", "region": "us"}, {"symbol": "NVDA", "name": "英伟达", "region": "us"}, {"symbol": "TSLA", "name": "特斯拉", "region": "us"}, {"symbol": "NFLX", "name": "Netflix", "region": "us"}, {"symbol": "9988.HK", "name": "阿里巴巴", "region": "cn"}, {"symbol": "0700.HK", "name": "腾讯", "region": "cn"}, {"symbol": "9618.HK", "name": "京东", "region": "cn"}, {"symbol": "BIDU", "name": "百度", "region": "cn"}, {"symbol": "PDD", "name": "拼多多", "region": "cn"}, {"symbol": "BABA", "name": "阿里(美)", "region": "cn"}];
 
 function switchTab(id, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
-  if (id === 'stock') loadStocks(false);
-  if (id === 'hist')  renderHistList();
+  if (id === 'hist') renderHistList();
 }
 
 /* ── 历史日报 ── */
 function renderHistList() {
   const el = document.getElementById('hist-list');
-  if (!HISTORY.length) { el.innerHTML = '<div class="empty">暂无历史记录</div>'; return; }
+  if (!HISTORY.length) {
+    el.innerHTML = '<div class="empty">暂无历史记录</div>';
+    return;
+  }
   el.innerHTML = HISTORY.map(h =>
     `<div class="hi" onclick="loadHistory('${h.file}','${h.date}')">
       <span class="hd">&#128197; ${h.date}</span>
       <span class="hc">${h.total} 条 &rsaquo;</span>
-    </div>`).join('');
+    </div>`
+  ).join('');
 }
 
 function loadHistory(file, date) {
@@ -126,13 +123,14 @@ function showModal(date, data) {
     if (!items.length) continue;
     html += `<h3 style="margin:1rem 0 .6rem;font-size:.95rem">${label}</h3><div class="cards">`;
     for (const item of items) {
-      const t = (item.title || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      const d = (item.desc  || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const t = (item.title || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const d = (item.desc  || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       html += `<a class="card" href="${item.url}" target="_blank" rel="noopener">
         <div class="card-top"><span class="tag">${item.source || ''}</span></div>
         <div class="card-title">${t}</div>
         ${d ? `<p class="desc">${d}</p>` : ''}
-        <div class="card-time">${item.time || ''}</div></a>`;
+        <div class="card-time">${item.time || ''}</div>
+      </a>`;
     }
     html += '</div>';
   }
@@ -148,48 +146,6 @@ function closeModal() {
 document.getElementById('modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
-
-/* ── 股价（前端实时拉取） ── */
-let stocksLoaded = false;
-async function loadStocks(force) {
-  if (stocksLoaded && !force) return;
-  const us = STOCKS.filter(s => s.region === 'us');
-  const cn = STOCKS.filter(s => s.region === 'cn');
-  document.getElementById('grid-us').innerHTML = '<div class="sload">加载中...</div>';
-  document.getElementById('grid-cn').innerHTML = '<div class="sload">加载中...</div>';
-  const results = await Promise.allSettled(STOCKS.map(s => fetchQuote(s.symbol)));
-  const map = {};
-  STOCKS.forEach((s, i) => { map[s.symbol] = results[i].status === 'fulfilled' ? results[i].value : null; });
-  document.getElementById('grid-us').innerHTML = us.map(s => stockCard(s, map[s.symbol])).join('');
-  document.getElementById('grid-cn').innerHTML = cn.map(s => stockCard(s, map[s.symbol])).join('');
-  stocksLoaded = true;
-}
-
-async function fetchQuote(symbol) {
-  const url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + encodeURIComponent(symbol) + '?interval=1d&range=2d';
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(r.status);
-  const d = await r.json();
-  const meta = d.chart.result[0].meta;
-  const price = meta.regularMarketPrice;
-  const prev  = meta.chartPreviousClose || meta.previousClose || price;
-  const chg   = price - prev;
-  const pct   = prev ? chg / prev * 100 : 0;
-  return { price, chg, pct, currency: meta.currency || 'USD' };
-}
-
-function stockCard(s, q) {
-  if (!q) return `<div class="sc flat"><div class="sn">${s.name}</div><div class="ss">${s.symbol}</div><div class="sload">获取失败</div></div>`;
-  const cls   = q.chg > 0 ? 'up' : q.chg < 0 ? 'down' : 'flat';
-  const arrow = q.chg >= 0 ? '&#9650;' : '&#9660;';
-  const sign  = q.chg >= 0 ? '+' : '';
-  return `<div class="sc ${cls}">
-    <div class="sn">${s.name}</div>
-    <div class="ss">${s.symbol}</div>
-    <div class="sp">${q.currency} ${q.price.toFixed(2)}</div>
-    <div class="sd ${cls}">${arrow} ${sign}${q.chg.toFixed(2)} (${sign}${q.pct.toFixed(2)}%)</div>
-  </div>`;
-}
 </script>
 </body>
 </html>
