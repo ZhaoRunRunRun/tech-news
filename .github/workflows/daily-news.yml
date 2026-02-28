@@ -1,0 +1,38 @@
+name: 每日科技新闻更新
+
+on:
+  schedule:
+    # 每天 UTC 00:00 = 北京时间 08:00
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 抓取新闻数据
+        run: python scripts/fetch_news.py
+
+      - name: 生成 HTML 页面
+        run: python scripts/generate_html.py
+
+      - name: 提交并推送更新
+        run: |
+          git config user.name "TechNewsBot"
+          git config user.email "bot@143709123.xyz"
+          git add docs/
+          git diff --staged --quiet || git commit -m "📰 每日科技新闻更新 $(date +'%Y-%m-%d')"
+          git push

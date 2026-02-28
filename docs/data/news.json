@@ -1,0 +1,127 @@
+{
+  "date": "2026-02-28",
+  "generated_at": "2026-02-28 16:45:29 CST",
+  "total": 15,
+  "items": [
+    {
+      "title": "We Will Not Be Divided",
+      "url": "https://notdivided.org",
+      "source": "Hacker News",
+      "score": 1478,
+      "time": "08:54",
+      "category": "综合科技"
+    },
+    {
+      "title": "Statement on the comments from Secretary of War Pete Hegseth",
+      "url": "https://www.anthropic.com/news/statement-comments-secretary-war",
+      "source": "Hacker News",
+      "score": 880,
+      "time": "09:20",
+      "category": "综合科技"
+    },
+    {
+      "title": "How do I cancel my ChatGPT subscription?",
+      "url": "https://help.openai.com/en/articles/7232927-how-do-i-cancel-my-chatgpt-subscription",
+      "source": "Hacker News",
+      "score": 639,
+      "time": "13:55",
+      "category": "综合科技"
+    },
+    {
+      "title": "A new California law says all operating systems need to have age verification",
+      "url": "https://www.pcgamer.com/software/operating-systems/a-new-california-law-says-all-operating-systems-including-linux-need-to-have-some-form-of-age-verification-at-account-setup/",
+      "source": "Hacker News",
+      "score": 565,
+      "time": "22:55",
+      "category": "综合科技"
+    },
+    {
+      "title": "OpenAI agrees with Dept. of War to deploy models in their classified network",
+      "url": "https://twitter.com/sama/status/2027578652477821175",
+      "source": "Hacker News",
+      "score": 559,
+      "time": "10:59",
+      "category": "综合科技"
+    },
+    {
+      "title": "OpenAI raises $110B on $730B pre-money valuation",
+      "url": "https://techcrunch.com/2026/02/27/openai-raises-110b-in-one-of-the-largest-private-funding-rounds-in-history/",
+      "source": "Hacker News",
+      "score": 476,
+      "time": "22:56",
+      "category": "综合科技"
+    },
+    {
+      "title": "Croatia declared free of landmines after 31 years",
+      "url": "https://glashrvatske.hrt.hr/en/domestic/croatia-declared-free-of-landmines-after-31-years-12593533",
+      "source": "Hacker News",
+      "score": 216,
+      "time": "10:48",
+      "category": "综合科技"
+    },
+    {
+      "title": "U.S. and Israel Conduct Strikes on Iran",
+      "url": "https://www.nytimes.com/live/2026/02/28/world/iran-strikes-trump",
+      "source": "Hacker News",
+      "score": 192,
+      "time": "14:57",
+      "category": "综合科技"
+    },
+    {
+      "title": "Smallest transformer that can add two 10-digit numbers",
+      "url": "https://github.com/anadim/AdderBoard",
+      "source": "Hacker News",
+      "score": 146,
+      "time": "02:29",
+      "category": "综合科技"
+    },
+    {
+      "title": "Don't use passkeys for encrypting user data",
+      "url": "https://blog.timcappalli.me/p/passkeys-prf-warning/",
+      "source": "Hacker News",
+      "score": 134,
+      "time": "11:11",
+      "category": "综合科技"
+    },
+    {
+      "title": "Show HN: I ported Manim to TypeScript (run 3b1B math animations in the browser)",
+      "url": "https://github.com/maloyan/manim-web",
+      "source": "Hacker News",
+      "score": 95,
+      "time": "02:15",
+      "category": "综合科技"
+    },
+    {
+      "title": "Qt45: A small polymerase ribozyme that can synthesize itself",
+      "url": "https://www.science.org/doi/10.1126/science.adt2760",
+      "source": "Hacker News",
+      "score": 79,
+      "time": "07:42",
+      "category": "综合科技"
+    },
+    {
+      "title": "Rust Is Just a Tool",
+      "url": "https://lewiscampbell.tech/blog/260204.html",
+      "source": "Hacker News",
+      "score": 62,
+      "time": "13:47",
+      "category": "综合科技"
+    },
+    {
+      "title": "Cash issuing terminals",
+      "url": "https://computer.rip/2026-02-27-ibm-atm.html",
+      "source": "Hacker News",
+      "score": 54,
+      "time": "13:21",
+      "category": "综合科技"
+    },
+    {
+      "title": "Bootc and OSTree: Modernizing Linux System Deployment",
+      "url": "https://a-cup-of.coffee/blog/ostree-bootc/",
+      "source": "Hacker News",
+      "score": 31,
+      "time": "10:55",
+      "category": "综合科技"
+    }
+  ]
+}
