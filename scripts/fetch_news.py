@@ -122,40 +122,33 @@ def fetch_juejin():
 
 # ── 实时热点 ──────────────────────────────────────────────
 def fetch_weibo_hot():
-    """微博热搜"""
+    """百度实时热搜（替代微博，服务器可访问）"""
     items = []
-    html = fetch("https://weibo.com/ajax/side/hotSearch")
-    if not html:
-        # 备用：抓取热搜页面
-        html = fetch("https://s.weibo.com/top/summary?cate=realtimehot")
     try:
-        data = json.loads(html)
-        realtime = data.get("data", {}).get("realtime", [])
-        for item in realtime[:15]:
-            word = item.get("word", "")
-            if word:
-                items.append({
-                    "title": word,
-                    "url": f"https://s.weibo.com/weibo?q=%23{urllib.parse.quote(word)}%23",
-                    "source": "微博热搜",
-                    "score": item.get("num", 0),
-                    "time": datetime.now(CST).strftime("%H:%M"),
-                    "category": "trending",
-                    "desc": item.get("category", "")
-                })
-    except Exception:
-        # 解析 HTML 备用
-        matches = re.findall(r'<td class="td-02"><a[^>]*>([^<]+)</a>', html)
-        for i, word in enumerate(matches[:15]):
+        req = urllib.request.Request(
+            "https://top.baidu.com/api/board?tab=realtime&_=1",
+            headers={"User-Agent": "Mozilla/5.0", "Referer": "https://top.baidu.com/"}
+        )
+        with urllib.request.urlopen(req, timeout=12) as r:
+            data = json.loads(r.read().decode("utf-8", "ignore"))
+        content = data["data"]["cards"][0]["content"]
+        for item in content[:20]:
+            title = item.get("word", "") or item.get("query", "")
+            url   = item.get("appUrl", "") or f"https://www.baidu.com/s?wd={urllib.parse.quote(title)}"
+            desc  = item.get("desc", "")[:80]
+            if not title:
+                continue
             items.append({
-                "title": word.strip(),
-                "url": f"https://s.weibo.com/weibo?q=%23{urllib.parse.quote(word.strip())}%23",
-                "source": "微博热搜",
-                "score": 15 - i,
+                "title": title,
+                "url": url,
+                "source": "百度热搜",
+                "score": item.get("hotScore", 0),
                 "time": datetime.now(CST).strftime("%H:%M"),
                 "category": "trending",
-                "desc": ""
+                "desc": desc
             })
+    except Exception as e:
+        print(f"[WARN] 百度热搜: {e}")
     return items
 
 def fetch_zhihu_hot():
