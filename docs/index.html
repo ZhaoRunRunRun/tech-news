@@ -1293,11 +1293,8 @@ function renderDailyReport() {
         .replace(/^# (.+)$/gm, '<h2 class="dr-h2">$1</h2>')
         .replace(/^---$/gm, '<hr class="dr-hr">')
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/
-
-/g, '</p><p class="dr-p">')
-        .replace(/
-/g, '<br>');
+        .replace(/\\n\\n/g, '</p><p class="dr-p">')
+        .replace(/\\n/g, '<br>');
       body.innerHTML = `
         <div class="dr-meta">AI 生成 · ${gen} · claude-sonnet-4-6</div>
         <div class="dr-content"><p class="dr-p">${html}</p></div>`;
