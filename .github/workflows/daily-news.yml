@@ -1,6 +1,13 @@
 name: 日知录每日更新
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - 'docs/**'
+      - '.github/workflows/**'
   schedule:
     - cron: '0 0 * * *'   # 北京时间 08:00
     - cron: '0 13 * * *'  # 北京时间 21:00
