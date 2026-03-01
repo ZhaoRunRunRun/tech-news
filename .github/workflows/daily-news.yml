@@ -41,7 +41,10 @@ jobs:
         run: |
           git config user.name "RizhiluBot"
           git config user.email "bot@rizhilu"
+          git add docs/
+          git stash
           git pull --rebase origin main
+          git stash pop
           git add docs/
           git diff --staged --quiet || git commit -m "📰 日知录更新 $(date +'%Y-%m-%d %H:%M') CST"
           git push
