@@ -670,7 +670,13 @@ def _panel_market():
       <div class="skel"></div><div class="skel"></div><div class="skel"></div>
     </div>
   </div>
-  <p style="color:var(--mu);font-size:.73rem;margin-top:.5rem">数据来源：Finnhub &nbsp;·&nbsp; 延迟约15分钟 &nbsp;·&nbsp; 每5分钟自动刷新</p>
+  <div class="market-section">
+    <div class="section-title">&#128177; 外汇兑人民币</div>
+    <div class="market-grid" id="mg-forex">
+      <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+    </div>
+  </div>
+  <p style="color:var(--mu);font-size:.73rem;margin-top:.5rem">数据来源：Finnhub / Yahoo Finance &nbsp;·&nbsp; 延迟约15分钟 &nbsp;·&nbsp; 每5分钟自动刷新</p>
 </div>"""
 
 
@@ -857,6 +863,14 @@ const MARKET = {{
     {{s:"VALE",n:"淡水河谷(铁矿)",cur:"USD"}},
     {{s:"RIO",n:"力拓集团",cur:"USD"}},
   ],
+  forex: [
+    {{s:"USDCNY=X",n:"美元",cur:"CNY",yahoo:"USDCNY=X"}},
+    {{s:"EURCNY=X",n:"欧元",cur:"CNY",yahoo:"EURCNY=X"}},
+    {{s:"GBPCNY=X",n:"英镑",cur:"CNY",yahoo:"GBPCNY=X"}},
+    {{s:"JPYCNY=X",n:"日元",cur:"CNY",yahoo:"JPYCNY=X"}},
+    {{s:"HKDCNY=X",n:"港币",cur:"CNY",yahoo:"HKDCNY=X"}},
+    {{s:"AUDCNY=X",n:"澳元",cur:"CNY",yahoo:"AUDCNY=X"}},
+  ],
 }};
 
 // ── Tab 切换 ──
@@ -889,6 +903,12 @@ const YAHOO_SYM_MAP = {{
   'HK:700':        '0700.HK',
   'OANDA:XAU_USD': 'GC=F',
   'OANDA:XAG_USD': 'SI=F',
+  'USDCNY=X':      'USDCNY=X',
+  'EURCNY=X':      'EURCNY=X',
+  'GBPCNY=X':      'GBPCNY=X',
+  'JPYCNY=X':      'JPYCNY=X',
+  'HKDCNY=X':      'HKDCNY=X',
+  'AUDCNY=X':      'AUDCNY=X',
 }};
 
 async function fetchYahooQuote(yahooSym) {{
@@ -954,7 +974,7 @@ function mCard(name, sym, extra, q, cur) {{
 
 async function loadMarket(force) {{
   if (marketLoaded && !force) return;
-  const all = [...MARKET.us, ...MARKET.cn, ...MARKET.metal, ...MARKET.nonferrous];
+  const all = [...MARKET.us, ...MARKET.cn, ...MARKET.metal, ...MARKET.nonferrous, ...MARKET.forex];
   const results = await Promise.allSettled(all.map(x => fetchQuote(x.s)));
   const map = {{}};
   all.forEach((x, i) => {{ map[x.s] = results[i].status === 'fulfilled' ? results[i].value : null; }});
@@ -962,6 +982,7 @@ async function loadMarket(force) {{
   document.getElementById('mg-cn').innerHTML         = MARKET.cn.map(x => mCard(x.n, x.s, '', map[x.s], x.cur)).join('');
   document.getElementById('mg-metal').innerHTML      = MARKET.metal.map(x => mCard('🥇 '+x.n, x.s, ' / '+(x.unit||''), map[x.s], x.cur)).join('');
   document.getElementById('mg-nonferrous').innerHTML = MARKET.nonferrous.map(x => mCard(x.n, x.s, '', map[x.s], x.cur)).join('');
+  document.getElementById('mg-forex').innerHTML      = MARKET.forex.map(x => mCard('💱 '+x.n, x.s, '/CNY', map[x.s], x.cur)).join('');
   const now = new Date().toLocaleTimeString('zh-CN', {{hour:'2-digit',minute:'2-digit'}});
   document.getElementById('market-ts').innerHTML = `<span>行情更新于 ${{now}}（延迟约15分钟）</span><a href="#" onclick="loadMarket(true);return false">↻ 刷新</a>`;
   marketLoaded = true;
@@ -1463,28 +1484,47 @@ function renderTrendRankPanel(items) {{
 }}
 
 async function loadRssTrend() {{
-  // 先把静态数据的时间显示出来（缓存标记）
   const staticGen = document.getElementById('hd-date')?.dataset?.gen || '';
   const staticTime = staticGen ? staticGen.split(' ').slice(1,2).join('').slice(0,5) : '缓存';
   setTrendUpd(staticTime, false);
 
-  const RSS_URL = 'https://rsshub.app/weibo/search/hot';
-  const items = await fetchRssItems(RSS_URL);
-  const now = fmtNow();
+  // 直接调微博热搜 API（无需 RSS 代理）
+  const APIS = [
+    'https://api.weibo.cn/2/guest/search/hot/word',
+    `https://api.allorigins.win/get?url=${{encodeURIComponent('https://api.weibo.cn/2/guest/search/hot/word')}}`
+  ];
 
+  let items = null;
+  for (const api of APIS) {{
+    try {{
+      const r = await fetch(api, {{signal: AbortSignal.timeout(6000)}});
+      if (!r.ok) continue;
+      const json = await r.json();
+      // allorigins 包了一层 contents
+      const data = json.contents ? JSON.parse(json.contents) : json;
+      const list = data?.data || [];
+      if (list.length > 0) {{
+        items = list.slice(0, 20).map(x => ({{
+          title: x.word?.replace(/^#|#$/g, '') || '',
+          url: `https://s.weibo.com/weibo?q=${{encodeURIComponent(x.word || '')}}`,
+          score: parseInt(x.num) || 0,
+          source: '微博热搜'
+        }}));
+        break;
+      }}
+    }} catch(e) {{ continue; }}
+  }}
+
+  const now = fmtNow();
   if (items && items.length > 0) {{
-    // 更新速览页热点列表
     const ovList = document.getElementById('ov-trend-list');
     if (ovList) ovList.innerHTML = renderOvTrendRank(items);
-    // 更新热点面板排行榜
     const rankList = document.getElementById('trend-rank-list');
     if (rankList) rankList.innerHTML = renderTrendRankPanel(items);
-    // 更新热点数量
     const cntEl = document.getElementById('ov-trend-count');
     if (cntEl) cntEl.textContent = items.length;
     setTrendUpd(now, true);
   }} else {{
-    // RSS 失败，显示缓存时间
     setTrendUpd(staticTime + ' (缓存)', false);
   }}
 }}
