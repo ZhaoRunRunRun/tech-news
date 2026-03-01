@@ -83,7 +83,7 @@ def main():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(_head(date))
         f.write(_nav())
-        f.write(_overview(intl, dom, trend, date, total))
+        f.write(_overview(intl, dom, trend, date, total, gen))
         f.write(_panel_intl(render_cards(intl, translate=True)))
         f.write(_panel_dom(render_cards(dom)))
         f.write(_panel_trend(render_cards(trend), trend))
@@ -198,7 +198,8 @@ a{{color:inherit;text-decoration:none}}
 /* ── 速览首页 ── */
 .overview-grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}}
 .ov-block{{background:var(--sf);border:1px solid var(--bd2);border-radius:8px;padding:1rem}}
-.ov-block-title{{font-size:.78rem;font-weight:700;color:var(--mu);margin-bottom:.7rem;display:flex;align-items:center;gap:.3rem}}
+.ov-block-title{{font-size:.78rem;font-weight:700;color:var(--mu);margin-bottom:.7rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}}
+.ov-upd-time{{font-size:.65rem;font-weight:400;color:var(--mu);opacity:.7;margin-left:.1rem}}
 .ov-list{{display:flex;flex-direction:column;gap:.5rem}}
 .ov-item{{font-size:.82rem;line-height:1.45;color:var(--tx);padding:.25rem 0;border-bottom:1px solid var(--bd2);cursor:pointer;transition:color .15s}}
 .ov-item:last-child{{border-bottom:none}}
@@ -280,15 +281,19 @@ a{{color:inherit;text-decoration:none}}
 footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-top:1px solid var(--bd);margin-top:2rem}}
 
 /* ── 天气组件 ── */
-.weather-bar{{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}}
-.weather-city{{display:flex;flex-direction:column;gap:.1rem;background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.18);border-radius:6px;padding:.3rem .7rem;min-width:130px}}
-.weather-city-name{{font-size:.65rem;color:var(--mu);font-weight:700;letter-spacing:.04em}}
-.weather-days{{display:flex;gap:.5rem}}
-.weather-day{{display:flex;flex-direction:column;align-items:center;gap:.05rem}}
-.weather-day-label{{font-size:.6rem;color:var(--mu)}}
-.weather-icon{{font-size:.9rem;line-height:1}}
-.weather-desc{{font-size:.6rem;color:var(--mu);white-space:nowrap}}
-.weather-temp{{font-size:.7rem;color:var(--tx);font-weight:600;white-space:nowrap}}
+.weather-bar{{display:flex;gap:.5rem;align-items:stretch;flex-wrap:wrap}}
+.weather-city{{display:flex;flex-direction:column;gap:.3rem;background:linear-gradient(135deg,rgba(88,166,255,.1),rgba(88,166,255,.04));border:1px solid rgba(88,166,255,.22);border-radius:10px;padding:.55rem .85rem;min-width:148px;transition:border-color .2s}}
+.weather-city:hover{{border-color:rgba(88,166,255,.45)}}
+.weather-city-name{{font-size:.68rem;color:var(--ac);font-weight:700;letter-spacing:.05em;display:flex;align-items:center;gap:.25rem}}
+.weather-days{{display:flex;gap:.6rem}}
+.weather-day{{display:flex;flex-direction:column;align-items:center;gap:.1rem;min-width:38px}}
+.weather-day.today{{background:rgba(88,166,255,.1);border-radius:6px;padding:.15rem .3rem}}
+.weather-day-label{{font-size:.58rem;color:var(--mu);font-weight:600;text-transform:uppercase}}
+.weather-icon{{font-size:1.1rem;line-height:1.2}}
+.weather-desc{{font-size:.58rem;color:var(--mu);white-space:nowrap;text-align:center}}
+.weather-temp{{font-size:.72rem;color:var(--tx);font-weight:700;white-space:nowrap;letter-spacing:.02em}}
+.weather-temp .hi{{color:#f85149}}.weather-temp .lo{{color:#58a6ff}}
+.weather-sparkline{{margin-top:.2rem;opacity:.85}}
 .weather-loading{{font-size:.72rem;color:var(--mu)}}
 
 /* ── 手动刷新按钮 ── */
@@ -486,19 +491,26 @@ def _nav():
 <main class="site-main">"""
 
 
-def _overview(intl, dom, trend, date, total):
-    def top5_list(items):
+def _overview(intl, dom, trend, date, total, gen=""):
+    # 格式化更新时间，只保留 HH:MM 部分
+    upd_time = ""
+    if gen:
+        try:
+            upd_time = gen.split(" ")[1][:5]  # "2026-03-01 08:05:14 CST" → "08:05"
+        except Exception:
+            upd_time = gen
+
+    def top10_list(items):
         html = ""
-        for i, item in enumerate(items[:5]):
+        for i, item in enumerate(items[:10]):
             title = esc(item.get("title",""))
             url   = esc(item.get("url","#"))
             html += f'<a class="ov-item" href="{url}" target="_blank" rel="noopener">{title}</a>'
         return html or '<div class="empty">暂无数据</div>'
 
     def trend_rank(items):
-        """热点排行榜，带排名序号"""
         html = ""
-        for i, item in enumerate(items[:5]):
+        for i, item in enumerate(items[:10]):
             title = esc(item.get("title",""))
             url   = esc(item.get("url","#"))
             rank_cls = f"r{i+1}" if i < 3 else ""
@@ -509,6 +521,8 @@ def _overview(intl, dom, trend, date, total):
                 f'</a>'
             )
         return html or '<div class="empty">暂无数据</div>'
+
+    upd_badge = f'<span class="ov-upd-time">&#128337; {upd_time}</span>' if upd_time else ""
 
     intl_count  = len(intl)
     dom_count   = len(dom)
@@ -524,16 +538,16 @@ def _overview(intl, dom, trend, date, total):
   </div>
   <div class="overview-grid">
     <div class="ov-block">
-      <div class="ov-block-title">&#128293; 热点 TOP5 <span class="section-more" onclick="switchTabByName('trend')">查看全部 &rsaquo;</span></div>
+      <div class="ov-block-title">&#128293; 热点 TOP10 {upd_badge}<span class="section-more" onclick="switchTabByName('trend')">查看全部 &rsaquo;</span></div>
       <div class="ov-rank-list">{trend_rank(trend)}</div>
     </div>
     <div class="ov-block">
-      <div class="ov-block-title">&#127760; 国际 TOP5 <span class="section-more" onclick="switchTabByName('intl')">查看全部 &rsaquo;</span></div>
-      <div class="ov-list">{top5_list(intl)}</div>
+      <div class="ov-block-title">&#127760; 国际 TOP10 {upd_badge}<span class="section-more" onclick="switchTabByName('intl')">查看全部 &rsaquo;</span></div>
+      <div class="ov-list">{top10_list(intl)}</div>
     </div>
     <div class="ov-block">
-      <div class="ov-block-title">&#127464;&#127475; 国内 TOP5 <span class="section-more" onclick="switchTabByName('dom')">查看全部 &rsaquo;</span></div>
-      <div class="ov-list">{top5_list(dom)}</div>
+      <div class="ov-block-title">&#127464;&#127475; 国内 TOP10 {upd_badge}<span class="section-more" onclick="switchTabByName('dom')">查看全部 &rsaquo;</span></div>
+      <div class="ov-list">{top10_list(dom)}</div>
     </div>
   </div>
   <div class="overview-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.5rem">
@@ -1291,7 +1305,6 @@ async function loadWeather() {{
       return {{ city: city.name, daily: d.daily }};
     }}));
     bar.innerHTML = results.map(({{ city, daily }}) => {{
-      // daily 数组: [昨天, 今天, 明天, 后天]
       const labels = ['昨天','今天','明天'];
       const days = [0,1,2].map(i => {{
         const code = daily.weathercode[i];
@@ -1299,32 +1312,32 @@ async function loadWeather() {{
         const desc = wDesc(code);
         const hi   = Math.round(daily.temperature_2m_max[i]);
         const lo   = Math.round(daily.temperature_2m_min[i]);
-        return `<div class="weather-day">
+        const isToday = i === 1;
+        return `<div class="weather-day${{isToday ? ' today' : ''}}">
           <span class="weather-day-label">${{labels[i]}}</span>
           <span class="weather-icon">${{icon}}</span>
           <span class="weather-desc">${{desc}}</span>
-          <span class="weather-temp">${{lo}}°~${{hi}}°</span>
+          <span class="weather-temp"><span class="hi">${{hi}}°</span><span style="color:var(--mu);font-size:.6rem">／</span><span class="lo">${{lo}}°</span></span>
         </div>`;
       }}).join('');
-      // 折线图：3天最高温趋势（SVG mini）
       const highs = [0,1,2].map(i => Math.round(daily.temperature_2m_max[i]));
       const lows  = [0,1,2].map(i => Math.round(daily.temperature_2m_min[i]));
       const allTemps = [...highs, ...lows];
       const tMin = Math.min(...allTemps) - 2, tMax = Math.max(...allTemps) + 2;
       const tRange = tMax - tMin || 1;
-      const W = 72, H = 28;
-      function tx(i) {{ return Math.round(i * W / 2); }}
-      function ty(t) {{ return Math.round(H - (t - tMin) / tRange * H); }}
+      const W = 80, H = 30;
+      const tx = i => Math.round(i * W / 2);
+      const ty = t => Math.round(H - (t - tMin) / tRange * H);
       const hiPts = highs.map((t,i) => `${{tx(i)}},${{ty(t)}}`).join(' ');
       const loPts = lows.map((t,i)  => `${{tx(i)}},${{ty(t)}}`).join(' ');
-      const sparkline = `<svg width="${{W}}" height="${{H}}" style="overflow:visible;margin-top:.3rem">
-        <polyline points="${{hiPts}}" fill="none" stroke="#f85149" stroke-width="1.5" stroke-linejoin="round"/>
-        <polyline points="${{loPts}}" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-linejoin="round"/>
-        ${{highs.map((t,i) => `<circle cx="${{tx(i)}}" cy="${{ty(t)}}" r="2" fill="#f85149"/>`).join('')}}
-        ${{lows.map((t,i)  => `<circle cx="${{tx(i)}}" cy="${{ty(t)}}" r="2" fill="#58a6ff"/>`).join('')}}
+      const sparkline = `<svg class="weather-sparkline" width="${{W}}" height="${{H}}" style="overflow:visible">
+        <polyline points="${{hiPts}}" fill="none" stroke="#f85149" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+        <polyline points="${{loPts}}" fill="none" stroke="#58a6ff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+        ${{highs.map((t,i) => `<circle cx="${{tx(i)}}" cy="${{ty(t)}}" r="2.5" fill="#f85149" stroke="var(--sf)" stroke-width="1"/>`).join('')}}
+        ${{lows.map((t,i)  => `<circle cx="${{tx(i)}}" cy="${{ty(t)}}" r="2.5" fill="#58a6ff" stroke="var(--sf)" stroke-width="1"/>`).join('')}}
       </svg>`;
       return `<div class="weather-city">
-        <span class="weather-city-name">📍 ${{city}}</span>
+        <span class="weather-city-name">🌍 ${{city}}</span>
         <div class="weather-days">${{days}}</div>
         ${{sparkline}}
       </div>`;
