@@ -281,10 +281,9 @@ a{{color:inherit;text-decoration:none}}
 footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-top:1px solid var(--bd);margin-top:2rem}}
 
 /* ── 天气组件 ── */
-.weather-bar{{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.2rem;align-items:center}}
-.weather-city{{display:flex;flex-direction:row;align-items:center;gap:.5rem;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:8px;padding:.35rem .7rem;flex-shrink:0;transition:border-color .2s}}
-.weather-city:hover{{border-color:rgba(88,166,255,.45)}}
-.weather-city-name{{font-size:.7rem;color:var(--ac);font-weight:700;white-space:nowrap}}
+.weather-bar{{display:flex;gap:.4rem;align-items:center;flex-wrap:nowrap;overflow:hidden}}
+.weather-city{{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--mu);white-space:nowrap;padding:.15rem .5rem;border-radius:4px;background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.15)}}
+.weather-city-name{{color:var(--ac);font-weight:600}}
 .weather-days{{display:flex;gap:.6rem}}
 .weather-day{{display:flex;flex-direction:column;align-items:center;gap:.1rem;min-width:38px}}
 .weather-day.today{{background:rgba(88,166,255,.1);border-radius:6px;padding:.15rem .3rem}}
@@ -1361,9 +1360,10 @@ async function loadWeather() {{
       const tmrLo = Math.round(daily.temperature_2m_min[1]);
       return `<div class="weather-city">
         <span class="weather-city-name">${{city}}</span>
-        <span style="font-size:1.1rem">${{wIcon(code)}}</span>
-        <span style="font-size:.72rem;color:var(--tx);font-weight:600"><span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>
-        <span style="font-size:.65rem;color:var(--mu);border-left:1px solid var(--bd2);padding-left:.5rem">明 ${{wIcon(tmrCode)}} <span style="color:#f85149">${{tmrHi}}°</span>/${{tmrLo}}°</span>
+        <span>${{wIcon(code)}}</span>
+        <span><span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>
+        <span style="color:var(--bd2)">|</span>
+        <span style="color:var(--mu)">明${{wIcon(tmrCode)}}${{tmrHi}}°/${{tmrLo}}°</span>
       </div>`;
     }}).join('');
   }} catch(e) {{
