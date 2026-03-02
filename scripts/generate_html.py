@@ -284,6 +284,9 @@ footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-t
 .weather-bar{{display:flex;gap:.4rem;align-items:center;flex-wrap:nowrap;overflow:hidden}}
 .weather-city{{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--mu);white-space:nowrap;padding:.15rem .5rem;border-radius:4px;background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.15)}}
 .weather-city-name{{color:var(--ac);font-weight:600}}
+.weather-day-item{{display:inline-flex;align-items:center;gap:.2rem;font-size:.72rem}}
+.weather-day-lbl{{font-size:.6rem;color:var(--mu);font-weight:600}}
+.weather-sep{{color:var(--bd2);margin:0 .2rem}}
 .weather-days{{display:flex;gap:.6rem}}
 .weather-day{{display:flex;flex-direction:column;align-items:center;gap:.1rem;min-width:38px}}
 .weather-day.today{{background:rgba(88,166,255,.1);border-radius:6px;padding:.15rem .3rem}}
@@ -623,7 +626,7 @@ def _panel_trend(cards_html, trend_items=None):
 <div id="trend" class="panel">
   <div class="trend-layout">
     <div class="trend-rank-box">
-      <div class="trend-rank-title">&#127942; 热搜 TOP10 <span class="ov-upd-time" id="trend-panel-upd">&#128337; 加载中...</span></div>
+      <div class="trend-rank-title">&#127942; 热搜 TOP10 <span class="ov-upd-time" id="trend-panel-upd">&#128337; 加载中...</span><button class="refresh-btn" style="font-size:.65rem;padding:.15rem .5rem;margin-left:.5rem" onclick="forceRefreshTrend()">&#8635; 刷新</button></div>
       <div class="rank-list" id="trend-rank-list">{rank_html or '<div class="empty">暂无数据</div>'}</div>
     </div>
     <div class="trend-cards-box">
@@ -1360,10 +1363,9 @@ async function loadWeather() {{
       const tmrLo = Math.round(daily.temperature_2m_min[1]);
       return `<div class="weather-city">
         <span class="weather-city-name">${{city}}</span>
-        <span>${{wIcon(code)}}</span>
-        <span><span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>
-        <span style="color:var(--bd2)">|</span>
-        <span style="color:var(--mu)">明${{wIcon(tmrCode)}}${{tmrHi}}°/${{tmrLo}}°</span>
+        <span class="weather-day-item"><span class="weather-day-lbl">今</span>${{wIcon(code)}}<span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>
+        <span class="weather-sep">·</span>
+        <span class="weather-day-item"><span class="weather-day-lbl">明</span>${{wIcon(tmrCode)}}<span style="color:#f85149">${{tmrHi}}°</span><span style="color:var(--mu)">/${{tmrLo}}°</span></span>
       </div>`;
     }}).join('');
   }} catch(e) {{
@@ -1403,17 +1405,24 @@ async function manualRefresh() {{
   btn.classList.add('spinning');
   btn.disabled = true;
   marketLoaded = false; ovMarketLoaded = false; aiData = null;
+  _rssCacheItems = null; _rssCacheTime = 0;
   try {{
     const activePanel = document.querySelector('.panel.active')?.id;
     if (activePanel === 'market')   await loadMarket(true);
     if (activePanel === 'overview') await loadOverviewMarket();
     if (activePanel === 'ai')       await loadAI();
     await loadWeather();
+    await loadRssTrend();
     setLastUpdated('manual');
   }} finally {{
     btn.classList.remove('spinning');
     btn.disabled = false;
   }}
+}}
+
+async function forceRefreshTrend() {{
+  _rssCacheItems = null; _rssCacheTime = 0;
+  await loadRssTrend();
 }}
 
 restoreLastUpdated();
