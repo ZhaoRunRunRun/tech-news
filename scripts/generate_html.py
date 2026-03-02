@@ -281,10 +281,10 @@ a{{color:inherit;text-decoration:none}}
 footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-top:1px solid var(--bd);margin-top:2rem}}
 
 /* ── 天气组件 ── */
-.weather-bar{{display:flex;gap:.8rem;overflow-x:auto;padding-bottom:.4rem;align-items:stretch}}
-.weather-city{{display:flex;flex-direction:row;gap:0;background:linear-gradient(135deg,rgba(88,166,255,.1),rgba(88,166,255,.04));border:1px solid rgba(88,166,255,.22);border-radius:10px;padding:.6rem .8rem;width:28rem;min-width:28rem;flex-shrink:0;transition:border-color .2s}}
+.weather-bar{{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.2rem;align-items:center}}
+.weather-city{{display:flex;flex-direction:row;align-items:center;gap:.5rem;background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:8px;padding:.35rem .7rem;flex-shrink:0;transition:border-color .2s}}
 .weather-city:hover{{border-color:rgba(88,166,255,.45)}}
-.weather-city-name{{font-size:.68rem;color:var(--ac);font-weight:700;letter-spacing:.05em;display:flex;align-items:center;gap:.25rem}}
+.weather-city-name{{font-size:.7rem;color:var(--ac);font-weight:700;white-space:nowrap}}
 .weather-days{{display:flex;gap:.6rem}}
 .weather-day{{display:flex;flex-direction:column;align-items:center;gap:.1rem;min-width:38px}}
 .weather-day.today{{background:rgba(88,166,255,.1);border-radius:6px;padding:.15rem .3rem}}
@@ -1304,10 +1304,28 @@ loadOvAIPreview();
 loadOvDailyInline();
 
 // ── 天气 ──
-const WEATHER_CITIES = [
+let WEATHER_CITIES = [
   {{ name: '北京', lat: 39.9042, lon: 116.4074 }},
   {{ name: '杭州', lat: 30.2741, lon: 120.1551 }},
 ];
+// IP 定位用户城市，插入到列表首位
+(async function detectCity() {{
+  try {{
+    const r = await fetch('https://ipapi.co/json/', {{signal: AbortSignal.timeout(4000)}});
+    if (!r.ok) return;
+    const d = await r.json();
+    if (d.city && d.latitude && d.longitude) {{
+      const city = {{ name: d.city, lat: d.latitude, lon: d.longitude }};
+      // 避免重复
+      if (!WEATHER_CITIES.some(c => c.name === city.name)) {{
+        WEATHER_CITIES = [city, ...WEATHER_CITIES.slice(0, 1)];
+      }} else {{
+        WEATHER_CITIES = [city];
+      }}
+      loadWeather();
+    }}
+  }} catch(e) {{}}
+}})();
 const WEATHER_ICONS = {{
   0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
   51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
@@ -1327,53 +1345,25 @@ async function loadWeather() {{
   const bar = document.getElementById('weather-bar');
   try {{
     const results = await Promise.all(WEATHER_CITIES.map(async city => {{
-      // past_days=1 获取昨天，forecast_days=3 获取今明后
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${{city.lat}}&longitude=${{city.lon}}`
-        + `&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FShanghai&past_days=1&forecast_days=3`;
-      const r = await fetch(url);
-      if (!r.ok) throw new Error('weather fetch failed');
+        + `&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FShanghai&forecast_days=2`;
+      const r = await fetch(url, {{signal: AbortSignal.timeout(6000)}});
+      if (!r.ok) throw new Error('failed');
       const d = await r.json();
       return {{ city: city.name, daily: d.daily }};
     }}));
     bar.innerHTML = results.map(({{ city, daily }}) => {{
-      const labels = ['昨天','今天','明天'];
-      const days = [0,1,2].map(i => {{
-        const code = daily.weathercode[i];
-        const icon = wIcon(code);
-        const desc = wDesc(code);
-        const hi   = Math.round(daily.temperature_2m_max[i]);
-        const lo   = Math.round(daily.temperature_2m_min[i]);
-        const isToday = i === 1;
-        return `<div class="weather-day${{isToday ? ' today' : ''}}">
-          <span class="weather-day-label">${{labels[i]}}</span>
-          <span class="weather-icon">${{icon}}</span>
-          <span class="weather-desc">${{desc}}</span>
-          <span class="weather-temp"><span class="hi">${{hi}}°</span><span style="color:var(--mu);font-size:.6rem">／</span><span class="lo">${{lo}}°</span></span>
-        </div>`;
-      }}).join('');
-      const highs = [0,1,2].map(i => Math.round(daily.temperature_2m_max[i]));
-      const lows  = [0,1,2].map(i => Math.round(daily.temperature_2m_min[i]));
-      const allTemps = [...highs, ...lows];
-      const tMin = Math.min(...allTemps) - 2, tMax = Math.max(...allTemps) + 2;
-      const tRange = tMax - tMin || 1;
-      const W = 80, H = 30;
-      const tx = i => Math.round(i * W / 2);
-      const ty = t => Math.round(H - (t - tMin) / tRange * H);
-      const hiPts = highs.map((t,i) => `${{tx(i)}},${{ty(t)}}`).join(' ');
-      const loPts = lows.map((t,i)  => `${{tx(i)}},${{ty(t)}}`).join(' ');
-      const sparkline = `<svg class="weather-sparkline" width="${{W}}" height="${{H}}" style="overflow:visible">
-        <polyline points="${{hiPts}}" fill="none" stroke="#f85149" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-        <polyline points="${{loPts}}" fill="none" stroke="#58a6ff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-        ${{highs.map((t,i) => `<circle cx="${{tx(i)}}" cy="${{ty(t)}}" r="2.5" fill="#f85149" stroke="var(--sf)" stroke-width="1"/>`).join('')}}
-        ${{lows.map((t,i)  => `<circle cx="${{tx(i)}}" cy="${{ty(t)}}" r="2.5" fill="#58a6ff" stroke="var(--sf)" stroke-width="1"/>`).join('')}}
-      </svg>`;
+      const code = daily.weathercode[0];
+      const hi = Math.round(daily.temperature_2m_max[0]);
+      const lo = Math.round(daily.temperature_2m_min[0]);
+      const tmrCode = daily.weathercode[1];
+      const tmrHi = Math.round(daily.temperature_2m_max[1]);
+      const tmrLo = Math.round(daily.temperature_2m_min[1]);
       return `<div class="weather-city">
-        <div class="wc-col wc-loc">
-          <span class="weather-city-name">🌍 ${{city}}</span>
-          <div style="font-size:.62rem;color:var(--mu);margin-top:.3rem">昨·今·明</div>
-        </div>
-        <div class="wc-col wc-days">${{days}}</div>
-        <div class="wc-col wc-chart">${{sparkline}}</div>
+        <span class="weather-city-name">${{city}}</span>
+        <span style="font-size:1.1rem">${{wIcon(code)}}</span>
+        <span style="font-size:.72rem;color:var(--tx);font-weight:600"><span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>
+        <span style="font-size:.65rem;color:var(--mu);border-left:1px solid var(--bd2);padding-left:.5rem">明 ${{wIcon(tmrCode)}} <span style="color:#f85149">${{tmrHi}}°</span>/${{tmrLo}}°</span>
       </div>`;
     }}).join('');
   }} catch(e) {{
@@ -1490,12 +1480,21 @@ function renderTrendRankPanel(items) {{
   }}).join('');
 }}
 
+let _rssCacheItems = null;
+let _rssCacheTime = 0;
+const RSS_TTL = 5 * 60 * 1000;
+
 async function loadRssTrend() {{
   const staticGen = document.getElementById('hd-date')?.dataset?.gen || '';
   const staticTime = staticGen ? staticGen.split(' ').slice(1,2).join('').slice(0,5) : '缓存';
   setTrendUpd(staticTime, false);
 
-  // 直接调微博热搜 API（无需 RSS 代理）
+  // 5分钟内直接用缓存
+  if (_rssCacheItems && Date.now() - _rssCacheTime < RSS_TTL) {{
+    renderTrendItems(_rssCacheItems, fmtNow());
+    return;
+  }}
+
   const APIS = [
     'https://api.weibo.cn/2/guest/search/hot/word',
     `https://api.allorigins.win/get?url=${{encodeURIComponent('https://api.weibo.cn/2/guest/search/hot/word')}}`
@@ -1507,7 +1506,6 @@ async function loadRssTrend() {{
       const r = await fetch(api, {{signal: AbortSignal.timeout(6000)}});
       if (!r.ok) continue;
       const json = await r.json();
-      // allorigins 包了一层 contents
       const data = json.contents ? JSON.parse(json.contents) : json;
       const list = data?.data || [];
       if (list.length > 0) {{
@@ -1522,18 +1520,23 @@ async function loadRssTrend() {{
     }} catch(e) {{ continue; }}
   }}
 
-  const now = fmtNow();
   if (items && items.length > 0) {{
-    const ovList = document.getElementById('ov-trend-list');
-    if (ovList) ovList.innerHTML = renderOvTrendRank(items);
-    const rankList = document.getElementById('trend-rank-list');
-    if (rankList) rankList.innerHTML = renderTrendRankPanel(items);
-    const cntEl = document.getElementById('ov-trend-count');
-    if (cntEl) cntEl.textContent = items.length;
-    setTrendUpd(now, true);
+    _rssCacheItems = items;
+    _rssCacheTime = Date.now();
+    renderTrendItems(items, fmtNow());
   }} else {{
     setTrendUpd(staticTime + ' (缓存)', false);
   }}
+}}
+
+function renderTrendItems(items, now) {{
+  const ovList = document.getElementById('ov-trend-list');
+  if (ovList) ovList.innerHTML = renderOvTrendRank(items);
+  const rankList = document.getElementById('trend-rank-list');
+  if (rankList) rankList.innerHTML = renderTrendRankPanel(items);
+  const cntEl = document.getElementById('ov-trend-count');
+  if (cntEl) cntEl.textContent = items.length;
+  setTrendUpd(now, true);
 }}
 
 // ── AI 资讯 ──
