@@ -285,6 +285,7 @@ footer{{text-align:center;padding:2rem;color:var(--mu);font-size:.75rem;border-t
 .weather-city{{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--mu);white-space:nowrap;padding:.15rem .5rem;border-radius:4px;background:rgba(88,166,255,.07);border:1px solid rgba(88,166,255,.15)}}
 .weather-city-name{{color:var(--ac);font-weight:600}}
 .weather-day-item{{display:inline-flex;align-items:center;gap:.2rem;font-size:.72rem}}
+.weather-day-item.today{{color:var(--tx);font-weight:600}}
 .weather-day-lbl{{font-size:.6rem;color:var(--mu);font-weight:600}}
 .weather-sep{{color:var(--bd2);margin:0 .2rem}}
 .weather-days{{display:flex;gap:.6rem}}
@@ -1310,24 +1311,6 @@ let WEATHER_CITIES = [
   {{ name: '北京', lat: 39.9042, lon: 116.4074 }},
   {{ name: '杭州', lat: 30.2741, lon: 120.1551 }},
 ];
-// IP 定位用户城市，插入到列表首位
-(async function detectCity() {{
-  try {{
-    const r = await fetch('https://ipapi.co/json/', {{signal: AbortSignal.timeout(4000)}});
-    if (!r.ok) return;
-    const d = await r.json();
-    if (d.city && d.latitude && d.longitude) {{
-      const city = {{ name: d.city, lat: d.latitude, lon: d.longitude }};
-      // 避免重复
-      if (!WEATHER_CITIES.some(c => c.name === city.name)) {{
-        WEATHER_CITIES = [city, ...WEATHER_CITIES.slice(0, 1)];
-      }} else {{
-        WEATHER_CITIES = [city];
-      }}
-      loadWeather();
-    }}
-  }} catch(e) {{}}
-}})();
 const WEATHER_ICONS = {{
   0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
   51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
@@ -1348,24 +1331,40 @@ async function loadWeather() {{
   try {{
     const results = await Promise.all(WEATHER_CITIES.map(async city => {{
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${{city.lat}}&longitude=${{city.lon}}`
-        + `&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FShanghai&forecast_days=2`;
+        + `&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FShanghai&past_days=1&forecast_days=2`;
       const r = await fetch(url, {{signal: AbortSignal.timeout(6000)}});
       if (!r.ok) throw new Error('failed');
       const d = await r.json();
       return {{ city: city.name, daily: d.daily }};
     }}));
     bar.innerHTML = results.map(({{ city, daily }}) => {{
-      const code = daily.weathercode[0];
-      const hi = Math.round(daily.temperature_2m_max[0]);
-      const lo = Math.round(daily.temperature_2m_min[0]);
-      const tmrCode = daily.weathercode[1];
-      const tmrHi = Math.round(daily.temperature_2m_max[1]);
-      const tmrLo = Math.round(daily.temperature_2m_min[1]);
+      const labels = ['昨','今','明'];
+      const days = [0,1,2].map(i => {{
+        const code = daily.weathercode[i];
+        const hi = Math.round(daily.temperature_2m_max[i]);
+        const lo = Math.round(daily.temperature_2m_min[i]);
+        return `<span class="weather-day-item${{i===1?' today':''}}"><span class="weather-day-lbl">${{labels[i]}}</span>${{wIcon(code)}}<span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>`;
+      }}).join('<span class="weather-sep">·</span>');
+      // sparkline
+      const highs = [0,1,2].map(i => Math.round(daily.temperature_2m_max[i]));
+      const lows  = [0,1,2].map(i => Math.round(daily.temperature_2m_min[i]));
+      const all = [...highs,...lows];
+      const mn = Math.min(...all)-1, mx = Math.max(...all)+1, rng = mx-mn||1;
+      const W=54,H=22;
+      const px = i => Math.round(i*W/2);
+      const py = t => Math.round(H-(t-mn)/rng*H);
+      const hpts = highs.map((t,i)=>`${{px(i)}},${{py(t)}}`).join(' ');
+      const lpts = lows.map((t,i)=>`${{px(i)}},${{py(t)}}`).join(' ');
+      const spark = `<svg width="${{W}}" height="${{H}}" style="overflow:visible;flex-shrink:0">
+        <polyline points="${{hpts}}" fill="none" stroke="#f85149" stroke-width="1.5" stroke-linejoin="round"/>
+        <polyline points="${{lpts}}" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-linejoin="round"/>
+        ${{highs.map((t,i)=>`<circle cx="${{px(i)}}" cy="${{py(t)}}" r="2" fill="#f85149"/>`).join('')}}
+        ${{lows.map((t,i)=>`<circle cx="${{px(i)}}" cy="${{py(t)}}" r="2" fill="#58a6ff"/>`).join('')}}
+      </svg>`;
       return `<div class="weather-city">
         <span class="weather-city-name">${{city}}</span>
-        <span class="weather-day-item"><span class="weather-day-lbl">今</span>${{wIcon(code)}}<span style="color:#f85149">${{hi}}°</span><span style="color:var(--mu)">/${{lo}}°</span></span>
-        <span class="weather-sep">·</span>
-        <span class="weather-day-item"><span class="weather-day-lbl">明</span>${{wIcon(tmrCode)}}<span style="color:#f85149">${{tmrHi}}°</span><span style="color:var(--mu)">/${{tmrLo}}°</span></span>
+        ${{days}}
+        ${{spark}}
       </div>`;
     }}).join('');
   }} catch(e) {{
