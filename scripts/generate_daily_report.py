@@ -277,12 +277,15 @@ def main():
     update_report_history(date_str, report_file)
     print("[INFO] 日报归档 → %s" % report_path)
 
-    # 推送飞书
-    try:
-        token = get_feishu_token()
-        send_feishu_card(report_text, date_str, token)
-    except Exception as e:
-        print("[WARN] 飞书推送失败: %s" % e)
+    # 仅在显式开启时推送飞书，避免手动调试时误发群消息
+    if os.getenv("PUSH_TO_FEISHU", "0") == "1":
+        try:
+            token = get_feishu_token()
+            send_feishu_card(report_text, date_str, token)
+        except Exception as e:
+            print("[WARN] 飞书推送失败: %s" % e)
+    else:
+        print("[INFO] 跳过飞书推送（PUSH_TO_FEISHU!=1）")
 
 if __name__ == "__main__":
     main()

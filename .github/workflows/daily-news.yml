@@ -39,7 +39,12 @@ jobs:
 
       - name: 生成 AI 日报（仅08:00）
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'schedule' && contains(github.event.schedule, '0 0 *'))
-        run: python scripts/generate_daily_report.py
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 0 * * *" ]; then
+            PUSH_TO_FEISHU=1 python scripts/generate_daily_report.py
+          else
+            python scripts/generate_daily_report.py
+          fi
 
       - name: 生成页面
         run: python scripts/generate_html.py
