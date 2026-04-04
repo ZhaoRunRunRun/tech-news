@@ -1,15 +1,16 @@
 {
-  "updated_at": "2026-04-04 06:38:03 CST",
+  "updated_at": "2026-04-04 10:34:42 CST",
   "stocks": [
     {
       "symbol": "AAPL",
       "name": "苹果",
       "region": "us",
-      "price": 255.92,
-      "change": 2.13,
-      "change_pct": 0.84,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "06:38"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "MSFT",
@@ -59,11 +60,12 @@
       "symbol": "NVDA",
       "name": "英伟达",
       "region": "us",
-      "price": 177.39,
-      "change": 2.99,
-      "change_pct": 1.71,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "06:38"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "TSLA",
