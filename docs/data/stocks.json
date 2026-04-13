@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-13 23:18:22 CST",
+  "updated_at": "2026-04-14 01:08:17 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -16,12 +16,11 @@
       "symbol": "MSFT",
       "name": "微软",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 381.07,
+      "change": 8.0,
+      "change_pct": 2.15,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "01:08"
     },
     {
       "symbol": "GOOGL",
@@ -148,12 +147,11 @@
       "symbol": "BABA",
       "name": "阿里(美)",
       "region": "cn",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 127.14,
+      "change": -0.54,
+      "change_pct": -0.43,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "01:08"
     }
   ]
 }
