@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-18 15:15:07 CST",
+  "updated_at": "2026-04-18 16:56:25 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -137,11 +137,12 @@
       "symbol": "PDD",
       "name": "拼多多",
       "region": "cn",
-      "price": 104.79,
-      "change": 2.82,
-      "change_pct": 2.77,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "15:15"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "BABA",
