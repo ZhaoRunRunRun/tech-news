@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-30 01:42:04 CST",
+  "updated_at": "2026-04-30 03:42:27 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -16,11 +16,12 @@
       "symbol": "MSFT",
       "name": "微软",
       "region": "us",
-      "price": 423.83,
-      "change": -0.99,
-      "change_pct": -0.23,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "01:42"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "GOOGL",
