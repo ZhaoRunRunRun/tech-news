@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-12 22:35:12 CST",
+  "updated_at": "2026-05-13 02:02:36 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -82,11 +82,11 @@
       "symbol": "NFLX",
       "name": "Netflix",
       "region": "us",
-      "price": 88.17,
-      "change": 0.68,
-      "change_pct": 0.78,
+      "price": 87.78,
+      "change": 0.3,
+      "change_pct": 0.34,
       "currency": "USD",
-      "updated": "22:35"
+      "updated": "02:02"
     },
     {
       "symbol": "9988.HK",
