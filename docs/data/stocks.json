@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-14 14:48:22 CST",
+  "updated_at": "2026-05-14 18:22:59 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -148,11 +148,12 @@
       "symbol": "BABA",
       "name": "阿里(美)",
       "region": "cn",
-      "price": 145.81,
-      "change": 8.51,
-      "change_pct": 6.2,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "14:48"
+      "updated": "--",
+      "error": true
     }
   ]
 }
