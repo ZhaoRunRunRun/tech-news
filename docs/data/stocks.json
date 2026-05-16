@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-17 01:01:58 CST",
+  "updated_at": "2026-05-17 03:10:47 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -27,12 +27,11 @@
       "symbol": "GOOGL",
       "name": "谷歌",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 396.78,
+      "change": -5.84,
+      "change_pct": -1.45,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "03:10"
     },
     {
       "symbol": "AMZN",
