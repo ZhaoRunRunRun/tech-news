@@ -1,16 +1,15 @@
 {
-  "updated_at": "2026-05-17 23:00:19 CST",
+  "updated_at": "2026-05-18 01:01:23 CST",
   "stocks": [
     {
       "symbol": "AAPL",
       "name": "苹果",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 300.23,
+      "change": 1.36,
+      "change_pct": 0.46,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "01:01"
     },
     {
       "symbol": "MSFT",
@@ -82,12 +81,11 @@
       "symbol": "NFLX",
       "name": "Netflix",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 87.02,
+      "change": -0.54,
+      "change_pct": -0.62,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "01:01"
     },
     {
       "symbol": "9988.HK",
