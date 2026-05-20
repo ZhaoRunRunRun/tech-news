@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-20 15:52:21 CST",
+  "updated_at": "2026-05-20 18:55:05 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -38,12 +38,11 @@
       "symbol": "AMZN",
       "name": "亚马逊",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 259.34,
+      "change": -4.8,
+      "change_pct": -1.82,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "18:55"
     },
     {
       "symbol": "META",
@@ -71,12 +70,11 @@
       "symbol": "TSLA",
       "name": "特斯拉",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 404.11,
+      "change": -18.13,
+      "change_pct": -4.29,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "18:55"
     },
     {
       "symbol": "NFLX",
