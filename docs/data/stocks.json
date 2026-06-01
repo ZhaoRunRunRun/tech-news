@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-02 05:36:55 CST",
+  "updated_at": "2026-06-02 07:37:44 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -60,11 +60,12 @@
       "symbol": "NVDA",
       "name": "英伟达",
       "region": "us",
-      "price": 224.36,
-      "change": 10.11,
-      "change_pct": 4.72,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "05:36"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "TSLA",
