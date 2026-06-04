@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-04 07:47:24 CST",
+  "updated_at": "2026-06-04 12:25:34 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -27,12 +27,11 @@
       "symbol": "GOOGL",
       "name": "谷歌",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 358.99,
+      "change": -17.38,
+      "change_pct": -4.62,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "12:25"
     },
     {
       "symbol": "AMZN",
@@ -82,12 +81,11 @@
       "symbol": "NFLX",
       "name": "Netflix",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 81.52,
+      "change": -4.33,
+      "change_pct": -5.04,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "12:25"
     },
     {
       "symbol": "9988.HK",
