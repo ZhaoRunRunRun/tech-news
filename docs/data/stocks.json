@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-07 05:08:12 CST",
+  "updated_at": "2026-06-07 07:07:29 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -27,12 +27,11 @@
       "symbol": "GOOGL",
       "name": "谷歌",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 368.53,
+      "change": 9.54,
+      "change_pct": 2.66,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "07:07"
     },
     {
       "symbol": "AMZN",
@@ -60,12 +59,11 @@
       "symbol": "NVDA",
       "name": "英伟达",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 205.1,
+      "change": -9.65,
+      "change_pct": -4.49,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "07:07"
     },
     {
       "symbol": "TSLA",
