@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-10 01:58:59 CST",
+  "updated_at": "2026-07-10 03:58:36 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -38,12 +38,11 @@
       "symbol": "AMZN",
       "name": "亚马逊",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 247.3,
+      "change": 1.32,
+      "change_pct": 0.54,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "03:58"
     },
     {
       "symbol": "META",
