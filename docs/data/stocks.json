@@ -1,16 +1,15 @@
 {
-  "updated_at": "2026-07-17 06:59:55 CST",
+  "updated_at": "2026-07-17 10:54:27 CST",
   "stocks": [
     {
       "symbol": "AAPL",
       "name": "苹果",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 333.26,
+      "change": 18.4,
+      "change_pct": 5.84,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "10:54"
     },
     {
       "symbol": "MSFT",
