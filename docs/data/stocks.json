@@ -1,16 +1,15 @@
 {
-  "updated_at": "2026-08-03 22:46:27 CST",
+  "updated_at": "2026-08-04 01:54:03 CST",
   "stocks": [
     {
       "symbol": "AAPL",
       "name": "苹果",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 306.02,
+      "change": -27.41,
+      "change_pct": -8.22,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "01:54"
     },
     {
       "symbol": "MSFT",
@@ -71,12 +70,11 @@
       "symbol": "TSLA",
       "name": "特斯拉",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 322.48,
+      "change": 13.63,
+      "change_pct": 4.41,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "01:54"
     },
     {
       "symbol": "NFLX",
