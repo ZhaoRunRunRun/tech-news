@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-08 11:35:50 CST",
+  "updated_at": "2026-08-08 13:00:01 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -49,11 +49,12 @@
       "symbol": "META",
       "name": "Meta",
       "region": "us",
-      "price": 592.1,
-      "change": 3.33,
-      "change_pct": 0.57,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "11:35"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "NVDA",
