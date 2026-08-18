@@ -1,16 +1,15 @@
 {
-  "updated_at": "2026-08-18 22:36:12 CST",
+  "updated_at": "2026-08-19 00:34:52 CST",
   "stocks": [
     {
       "symbol": "AAPL",
       "name": "苹果",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 310.59,
+      "change": 4.66,
+      "change_pct": 1.52,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "00:34"
     },
     {
       "symbol": "MSFT",
@@ -49,23 +48,21 @@
       "symbol": "META",
       "name": "Meta",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 551.03,
+      "change": -38.82,
+      "change_pct": -6.58,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "00:34"
     },
     {
       "symbol": "NVDA",
       "name": "英伟达",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 219.66,
+      "change": -5.5,
+      "change_pct": -2.44,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "00:34"
     },
     {
       "symbol": "TSLA",
@@ -137,12 +134,11 @@
       "symbol": "PDD",
       "name": "拼多多",
       "region": "cn",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 86.65,
+      "change": 1.86,
+      "change_pct": 2.19,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "00:34"
     },
     {
       "symbol": "BABA",
