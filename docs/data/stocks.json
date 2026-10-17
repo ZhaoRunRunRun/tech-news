@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17 11:40:11 CST",
+  "updated_at": "2026-10-17 16:22:29 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -71,11 +71,12 @@
       "symbol": "TSLA",
       "name": "特斯拉",
       "region": "us",
-      "price": 354.72,
-      "change": -12.44,
-      "change_pct": -3.39,
+      "price": 0,
+      "change": 0,
+      "change_pct": 0,
       "currency": "USD",
-      "updated": "11:40"
+      "updated": "--",
+      "error": true
     },
     {
       "symbol": "NFLX",
