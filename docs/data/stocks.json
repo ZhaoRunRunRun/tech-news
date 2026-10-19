@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19 12:28:51 CST",
+  "updated_at": "2026-10-19 20:36:21 CST",
   "stocks": [
     {
       "symbol": "AAPL",
@@ -16,12 +16,11 @@
       "symbol": "MSFT",
       "name": "微软",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 529.05,
+      "change": -4.64,
+      "change_pct": -0.87,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "20:36"
     },
     {
       "symbol": "GOOGL",
@@ -49,12 +48,11 @@
       "symbol": "META",
       "name": "Meta",
       "region": "us",
-      "price": 0,
-      "change": 0,
-      "change_pct": 0,
+      "price": 709.33,
+      "change": -28.21,
+      "change_pct": -3.83,
       "currency": "USD",
-      "updated": "--",
-      "error": true
+      "updated": "20:36"
     },
     {
       "symbol": "NVDA",
